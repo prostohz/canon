@@ -1,0 +1,47 @@
+language 0.1.0
+module requirements
+  means
+    Binding and accompanying statements about the required properties of a
+    system or of the process of building it, including their origin, obligation
+    and lifecycle.
+
+entity requirement : thing
+  means
+    requirement: a binding verifiable statement about the properties or
+    behaviour of a system, or of the process of building it.
+
+entity assumption : thing
+  means
+    assumption: a statement about the environment or context, taken to be true
+    when requirements are assessed.
+
+entity exclusion : thing
+  means
+    exclusion: a statement placing a named piece of work outside the scope,
+    not subject to implementation and not counted among requirements.
+
+entity guarantee : thing
+  means
+    guarantee: a statement a system is bound to uphold while the related
+    assumptions hold.
+
+entity stakeholder : thing
+  means
+    stakeholder: a subject or group whose interests a specification takes into
+    account.
+
+entity obligation : thing
+  means
+    obligation: how binding a requirement is — whether conformance is
+    impossible without meeting it, or a justified departure from it is
+    admissible.
+
+entity rationale : thing
+  means
+    rationale: the recorded reason for the existence of a requirement or for
+    the wording chosen for it.
+
+entity status : thing
+  means
+    status: the current position of a requirement within an established
+    lifecycle process.

@@ -1,0 +1,49 @@
+language 0.1.0
+module reliability
+  means
+    The ability of a system to preserve its required behaviour in the presence
+    of faults, erroneous states and failures, and to restore that behaviour.
+
+entity fault : thing
+  means
+    fault: a primary cause capable of bringing a system into an incorrect
+    internal state.
+
+entity error : thing
+  means
+    error: an internal state of a system that may lead to an observable
+    failure.
+
+entity failure : thing
+  means
+    failure: an observable deviation of the behaviour a system provides from
+    the behaviour required of it.
+
+entity recovery : thing
+  means
+    recovery: the process of returning a system from a failure or an erroneous
+    state to an admissible state.
+
+entity retry-policy : thing
+  means
+    retry policy: the rules for repeating an operation that did not succeed.
+
+entity timeout : thing
+  means
+    timeout: the greatest admissible duration of waiting for an operation or
+    an event to complete.
+
+entity circuit-breaker : thing
+  means
+    circuit breaker: a mechanism that temporarily stops requests to a
+    dependent component once a given level of failure is detected.
+
+entity redundancy : thing
+  means
+    redundancy: the presence of additional interchangeable means of performing
+    a function after part of the means is lost.
+
+entity degradation : thing
+  means
+    degradation: an intended reduction of functionality or quality that
+    preserves part of the useful behaviour.

@@ -1,0 +1,43 @@
+language 0.1.0
+module storage
+  means
+    Long-term retention of data, its physical organisation, access to it and
+    controlled change of the structure of a store.
+
+entity store : thing
+  means
+    store: a technical system retaining data beyond the single execution that
+    produced it.
+
+entity database : thing
+  means
+    database: a named collection of interrelated data and its schemas, managed
+    by a store.
+
+entity collection : thing
+  means
+    collection: a named set of stored records of one kind or of compatible
+    kinds.
+
+entity table : thing
+  means
+    table: a relational collection of rows organised by named columns.
+
+entity column : thing
+  means
+    column: a named typed part of the physical structure of a table.
+
+entity index : thing
+  means
+    index: an auxiliary storage structure speeding up the search for records
+    by definite values.
+
+entity transaction : thing
+  means
+    transaction: a group of operations on a store, regarded within given
+    boundaries of atomicity and isolation.
+
+entity migration : thing
+  means
+    migration: a controlled transformation of the structure or content of a
+    store between two definite states.

@@ -1,0 +1,70 @@
+{
+  "name": "canon-vscode",
+  "displayName": "Canon",
+  "description": "Highlighting, navigation and hints for the canon specification language",
+  "version": "0.1.0",
+  "publisher": "canon",
+  "license": "MIT",
+  "keywords": ["canon", "specification", "requirements"],
+  "homepage": "https://github.com/prostohz/canon",
+  "bugs": "https://github.com/prostohz/canon/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prostohz/canon.git",
+    "directory": "@canon/vscode"
+  },
+  "files": [
+    "extension.js",
+    "canon.js",
+    "language-configuration.json",
+    "syntaxes"
+  ],
+  "scripts": {
+    "prepack": "node -e \"require('fs').copyFileSync('../../LICENSE', 'LICENSE')\""
+  },
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "main": "./extension.js",
+  "activationEvents": [
+    "onLanguage:canon"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    },
+    "virtualWorkspaces": true
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "canon",
+        "aliases": [
+          "Canon"
+        ],
+        "extensions": [
+          ".canon"
+        ],
+        "firstLine": "^language\\s+\\d+\\.\\d+\\.\\d+\\s*$",
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "canon",
+        "scopeName": "source.canon",
+        "path": "./syntaxes/canon.tmLanguage.json"
+      }
+    ],
+    "configurationDefaults": {
+      "[canon]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.wordBasedSuggestions": "off"
+      }
+    }
+  }
+}

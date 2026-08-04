@@ -1,0 +1,32 @@
+language 0.1.0
+module quality
+  means
+    Measurable characteristics of a system and the conditions under which
+    those characteristics are assessed against required levels.
+
+entity quality-attribute : thing
+  means
+    quality attribute: an aspect of a system's behaviour or outcome whose
+    degree is subject to assessment.
+
+entity metric : thing
+  means
+    metric: a formally defined way of quantifying a quality attribute.
+
+entity measurement : thing
+  means
+    measurement: an obtained value of a metric together with the conditions
+    and the moment of its obtaining.
+
+entity objective : thing
+  means
+    objective: a required level of a metric under definite conditions.
+
+entity threshold : thing
+  means
+    threshold: a boundary of the admissible value of a metric.
+
+entity workload : thing
+  means
+    workload: a formal description of the intensity and composition of the
+    influences on a system during quality assessment.

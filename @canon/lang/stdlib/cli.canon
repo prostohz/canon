@@ -1,0 +1,44 @@
+language 0.1.0
+module cli
+  means
+    Interaction with a program through a command line: what is named at the
+    start of an execution, what the program writes back in the course of it,
+    and what it reports on finishing.
+
+entity invocation : thing
+  means
+    invocation: a single start of a program with everything named to it on
+    the command line.
+
+entity command : thing
+  means
+    command: the named piece of work an invocation asks a program to do.
+
+entity subcommand : thing
+  means
+    subcommand: a command reached only through another command and narrowing
+    what it does.
+
+entity option : thing
+  means
+    option: a named part of an invocation, written apart from the order of
+    the rest and admitting a default.
+
+entity argument : thing
+  means
+    argument: a part of an invocation recognised by its place among the
+    others rather than by a name.
+
+entity output-stream : thing
+  means
+    output stream: a channel into which a program writes text in the course
+    of an invocation.
+
+entity exit-status : thing
+  means
+    exit status: the value by which a finished invocation reports its
+    outcome to whoever started it.
+
+entity usage : thing
+  means
+    usage: the text by which a program states the invocations it accepts.

@@ -1,0 +1,33 @@
+language 0.1.0
+module traceability
+  means
+    The correspondence between labelled statements and the places carrying
+    them out, established in both directions, together with what is found
+    missing on either side.
+
+entity label : thing
+  means
+    label: a stable name by which a statement is addressed from outside the
+    document declaring it.
+
+entity mention : thing
+  means
+    mention: an occurrence of a label outside the document declaring it,
+    naming the place that occurrence stands in.
+
+entity trace-link : thing
+  means
+    trace link: the established correspondence between a labelled statement
+    and a place carrying it out.
+
+entity coverage : thing
+  means
+    coverage: the share of labelled statements having at least one link.
+
+entity orphan : thing
+  means
+    orphan: a mention of a label that no statement declares.
+
+entity gap : thing
+  means
+    gap: a labelled statement to which no mention corresponds.

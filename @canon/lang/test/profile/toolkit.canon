@@ -1,0 +1,30 @@
+language 0.1.0
+module toolkit
+  uses core, data, runtime
+  means
+    A test profile: a specialisation of the standard entities together with
+    declarations of values and their bounds.
+
+value worker-name : core:text
+  means
+    The name of a worker, by which it is told apart in the execution log.
+
+value restart-count : core:integer
+  means
+    The number of restarts of a worker since the process started, zero or
+    more.
+
+enum worker-state
+  idle
+  busy
+  stopped
+  means
+    The state of a worker: waiting for a task, running one, or stopped.
+
+entity worker : runtime:process
+  worker-state  : worker-state
+  worker-name   : worker-name
+  restart-count : restart-count
+  means
+    worker: a process that runs tasks one at a time and survives a restart
+    without losing its name.

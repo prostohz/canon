@@ -1,0 +1,40 @@
+language 0.1.0
+module identity
+  means
+    Digital recognition of subjects, confirmation of their identity and the
+    granting of authority to them within an information system.
+
+entity principal : thing
+  means
+    principal: an entity to which authority may be granted and on whose behalf
+    actions are performed.
+
+entity identity : thing
+  means
+    identity: a set of claims by which a principal is recognised within a
+    given system.
+
+entity account : thing
+  means
+    account: a system-managed representation of an identity, having a
+    lifecycle of its own.
+
+entity credential : thing
+  means
+    credential: a secret or other verifiable object used to confirm an
+    identity.
+
+entity session : thing
+  means
+    session: a time-limited context of interaction bound to a confirmed
+    identity.
+
+entity role : thing
+  means
+    role: a named collection of authorities granted to a principal in a
+    definite context.
+
+entity permission : thing
+  means
+    permission: the right to perform a definite action upon a definite object
+    or class of objects.

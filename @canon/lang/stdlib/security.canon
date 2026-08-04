@@ -1,0 +1,36 @@
+language 0.1.0
+module security
+  means
+    Protection of valuable entities from threats by means of policies,
+    controls and explicitly established boundaries of trust.
+
+entity asset : thing
+  means
+    asset: an entity holding value and requiring protection.
+
+entity threat : thing
+  means
+    threat: a potential cause of unwanted impact upon an asset.
+
+entity vulnerability : thing
+  means
+    vulnerability: a property of a system that a threat can use to break a
+    security property.
+
+entity control : thing
+  means
+    control: a technical or organisational means of reducing a security risk.
+
+entity policy : thing
+  means
+    policy: a normative set of rules for admissible handling of assets.
+
+entity trust-boundary : thing
+  means
+    trust boundary: a boundary between areas holding different assumptions
+    about trust and control.
+
+entity security-property : thing
+  means
+    security property: a verifiable characteristic of the protection of an
+    asset or a system.

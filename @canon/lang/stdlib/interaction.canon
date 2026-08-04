@@ -1,0 +1,39 @@
+language 0.1.0
+module interaction
+  means
+    Purposeful interaction of actors with a system: their goals, use cases,
+    scenarios, inputs and observable outcomes, independent of any particular
+    interface.
+
+entity actor : thing
+  means
+    actor: a subject or external system taking part in a scenario of
+    interaction in a definite role.
+
+entity goal : thing
+  means
+    goal: the desired outcome for the sake of which an actor begins an
+    interaction.
+
+entity use-case : thing
+  means
+    use case: a description of a complete interaction by which an actor
+    reaches a goal.
+
+entity scenario : thing
+  means
+    scenario: one admissible sequence of steps of a use case.
+
+entity step : thing
+  means
+    step: a single action of an actor or of the system, indivisible from the
+    point of view of the scenario.
+
+entity input : thing
+  means
+    input: information or influence required for a step to be performed.
+
+entity outcome : thing
+  means
+    outcome: an observable state or value arising from the performance of a
+    step or a scenario.

@@ -1,0 +1,45 @@
+language 0.1.0
+module source
+  means
+    Text taken as the subject of processing: the characters it is made of,
+    the coordinates by which a place in it is named, and the way those
+    characters are represented.
+
+entity source-text : thing
+  means
+    source text: a body of characters processed as a whole and read from a
+    single origin.
+
+entity character : thing
+  means
+    character: the smallest unit of a source text, indivisible for the
+    purpose of processing.
+
+entity line : thing
+  means
+    line: the characters of a source text between two line breaks, taken in
+    their order.
+
+entity position : thing
+  means
+    position: a place in a source text, named by the line and the offset
+    within it.
+
+entity span : thing
+  means
+    span: a continuous stretch of a source text between two positions.
+
+entity excerpt : thing
+  means
+    excerpt: the characters of a span, reproduced apart from the source text
+    they belong to.
+
+entity encoding : thing
+  means
+    encoding: a correspondence between characters and the bytes representing
+    them.
+
+entity whitespace : thing
+  means
+    whitespace: a character separating others and carrying no meaning beyond
+    the separation.

@@ -1,0 +1,136 @@
+language 0.1.0
+module transfers
+  uses core, data, identity
+  means
+    Moving money between the accounts a bank keeps: what an account is, what
+    a transfer is made of, what the bank tells a holder about both, and what
+    it promises of all three.
+
+# --- what a sum is written in --------------------------------------------
+
+value account-number : core:text
+  means
+    account number: what an account is named by outside the bank, told to
+    whoever is to send money to it.
+
+value amount : core:decimal
+  means
+    amount: a sum of money greater than zero, in the one currency the bank
+    keeps its books in.
+
+value charge : amount
+  means
+    charge: what the bank takes for carrying a transfer, held apart from the
+    sum being carried so that a holder may see the one beside the other.
+
+value note : core:text
+  means
+    note: a line a holder writes for their own reading, carried by the bank
+    and read by nobody in it.
+
+# --- states ---------------------------------------------------------------
+
+enum transfer-state
+  requested
+  settled
+  rejected
+  means
+    transfer state: how far a transfer has come — asked for and standing
+    still, carried through and final, or refused and carried nowhere.
+
+# --- what the bank keeps --------------------------------------------------
+
+entity holder : identity:identity
+  means
+    holder: the person or the organisation a bank keeps accounts for,
+    recognised before the first of them is opened.
+
+entity account : identity:account
+  account-number : account-number
+  holder         : holder
+  balance        : amount
+  means
+    account: the money a bank keeps for one holder, named by a number and
+    standing at a balance.
+
+entity transfer : data:record
+  payer          : account
+  payee          : account
+  amount         : amount
+  transfer-state : transfer-state
+  charges        : charge          many optional
+  means
+    transfer: a sum asked to move from one account to another, in the state
+    that asking has reached, with what the bank takes for carrying it.
+
+entity statement : data:record
+  account   : account
+  transfers : transfer   many
+  note      : note       optional
+  means
+    statement: what a bank tells one holder about one account over a period
+    — every transfer that touched it, and nothing else.
+
+# --- what is promised -----------------------------------------------------
+
+requirement R-001
+  states
+    A [transfer|transfer] comes to [transfer-state.settled|settled] only
+    while the [transfer.payer|account it is paid from] holds a balance no
+    smaller than the [transfer.amount|amount] and the
+    [transfer.charges|charges] together.
+  because
+    An account driven below zero is a loan, and the bank lends under another
+    agreement than this one.
+
+requirement R-002
+  states
+    The moment a [transfer|transfer] is [transfer-state.settled|settled] the
+    [transfer.amount|amount] has left the [transfer.payer|payer] and reached
+    the [transfer.payee|payee]. No reader of the books sees it in both at
+    once, and none sees it in neither.
+  because
+    A sum seen twice or seen nowhere is the one fault a ledger may not have,
+    and what a reader would see between two writes is the whole of the
+    question.
+
+requirement R-003
+  given A-001
+  states
+    An [account#one|account] and an [account#other|another] of one
+    [holder|holder] carry different [one.account-number|numbers], and
+    [other|the second] is reached by its own number and by nothing else.
+  because
+    A holder with two accounts is the ordinary case, and a number naming
+    both would send money to whichever of them the bank found first.
+
+requirement R-004
+  states
+    A [statement|statement] holds every [transfer|transfer] that touched its
+    [statement.account|account] within the period it covers, and holds no
+    other.
+  because
+    A holder reads the statement and not the ledger; a transfer missing from
+    it is a transfer the holder has no occasion to dispute.
+
+requirement R-005
+  states
+    A [transfer|transfer] refused by the bank stands at
+    [transfer-state.rejected|rejected] and moves neither its
+    [transfer.amount|amount] nor its [transfer.charges|charges].
+  because
+    A refusal that took a charge would be a service, and the bank performed
+    none.
+
+assume A-001
+  states
+    A [holder|holder] is recognised before an [account|account] is opened
+    for it, and stays the same holder while the account is kept.
+
+exclude X-001
+  states
+    A [transfer|transfer] to an account another bank keeps is not part of
+    the first version.
+  because
+    Another bank is reached through a settlement network, which answers on a
+    timetable of its own and is a delivery of its own.

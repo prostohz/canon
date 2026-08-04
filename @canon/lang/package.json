@@ -1,0 +1,58 @@
+{
+  "name": "@canon/lang",
+  "version": "0.1.0",
+  "description": "The canon language: its definition, and the tool parsing and checking specifications written in it",
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "keywords": ["canon", "specification", "requirements", "vocabulary"],
+  "homepage": "https://github.com/prostohz/canon",
+  "bugs": "https://github.com/prostohz/canon/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prostohz/canon.git",
+    "directory": "@canon/lang"
+  },
+  "type": "module",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "default": "./dist/src/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "canon": "dist/src/bin.js"
+  },
+  "files": [
+    "dist/src",
+    "docs",
+    "stdlib",
+    "README.md",
+    "LICENSE"
+  ],
+  "canon": {
+    "stdlib": "stdlib",
+    "docs": "docs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "smol-toml": "^1.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "tsc",
+    "prepack": "node -e \"require('fs').copyFileSync('../../LICENSE', 'LICENSE')\"",
+    "test": "tsc && node --test dist/test/*.test.js",
+    "check": "tsc && node dist/src/bin.js check"
+  }
+}

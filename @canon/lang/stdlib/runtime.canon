@@ -1,0 +1,38 @@
+language 0.1.0
+module runtime
+  means
+    The actual execution of software components: instances existing in time,
+    processes, threads, executions, states and the resources they consume.
+
+entity instance : thing
+  means
+    instance: a particular embodiment of a component or other executable type,
+    existing in time.
+
+entity process : thing
+  means
+    process: an isolated context of program execution with resources allotted
+    to it.
+
+entity thread : thing
+  means
+    thread: a sequence of executed instructions within a process.
+
+entity execution : thing
+  means
+    execution: a single occurrence of an operation, task or component being
+    run in a definite temporal context.
+
+entity state : thing
+  means
+    state: the significant properties of an instance at a definite moment in
+    time.
+
+entity transition : thing
+  means
+    transition: an admissible change of an instance from one state to another.
+
+entity resource : thing
+  means
+    resource: a limited available entity consumed or occupied during
+    execution.

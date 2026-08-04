@@ -1,0 +1,49 @@
+language 0.1.0
+module api
+  means
+    Programmatic interaction between systems and components through explicitly
+    published contracts for invoking operations.
+
+entity interface : thing
+  means
+    interface: a named contract gathering the operations available to an
+    external consumer.
+
+entity operation : thing
+  means
+    operation: an invocable action with definite inputs, results and
+    conditions of performance.
+
+entity endpoint : thing
+  means
+    endpoint: an addressable place through which a consumer reaches an
+    interface.
+
+entity request : thing
+  means
+    request: a transmitted representation of the intent to invoke an
+    operation, together with its input data.
+
+entity response : thing
+  means
+    response: a transmitted representation of the result of invoking an
+    operation.
+
+entity parameter : thing
+  means
+    parameter: a named part of the input or configuration of an operation,
+    having a definite type.
+
+entity protocol : thing
+  means
+    protocol: a set of rules for exchanging messages between parties to an
+    interaction.
+
+entity status : thing
+  means
+    status: a classified outcome of processing a request, conveyed to the
+    consumer.
+
+entity error : thing
+  means
+    error: an unsuccessful outcome of an operation, described by the contract.

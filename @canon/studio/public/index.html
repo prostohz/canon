@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Specifications</title>
+<style>
+  :root {
+    --bg: #fbfbf9;
+    --panel: #ffffff;
+    --line: #e2e0da;
+    --ink: #23211d;
+    --dim: #6f6b63;
+    --accent: #8a5a2b;
+    --error: #a33131;
+    --warn: #8a6d1f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16150f; --panel: #1d1c16; --line: #34322a;
+      --ink: #e9e6dd; --dim: #9c968a; --accent: #d3a06a;
+      --error: #e08585; --warn: #d4b464;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 15px/1.55 -apple-system, "Segoe UI", system-ui, sans-serif;
+  }
+  code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+  header {
+    display: flex; align-items: baseline; gap: 1.5rem; flex-wrap: wrap;
+    padding: .9rem 1.25rem; border-bottom: 1px solid var(--line);
+    background: var(--panel); position: sticky; top: 0; z-index: 5;
+  }
+  header h1 { margin: 0; font-size: 1rem; letter-spacing: .02em; }
+  .totals { display: flex; gap: 1.1rem; color: var(--dim); font-size: .85rem; }
+  .totals b { color: var(--ink); font-weight: 600; }
+  .totals .bad { color: var(--error); }
+  .totals .warn { color: var(--warn); }
+
+  main { display: grid; grid-template-columns: 17rem 1fr; min-height: calc(100vh - 3.4rem); }
+  @media (max-width: 860px) { main { grid-template-columns: 1fr; } }
+
+  nav {
+    border-right: 1px solid var(--line); background: var(--panel);
+    padding: .75rem 0; overflow-y: auto; max-height: calc(100vh - 3.4rem);
+    position: sticky; top: 3.4rem;
+  }
+  nav .group { padding: .35rem 1rem .1rem; color: var(--dim);
+    font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; }
+  nav button {
+    display: flex; justify-content: space-between; gap: .5rem; width: 100%;
+    padding: .3rem 1rem; border: 0; background: none; color: inherit;
+    font: inherit; text-align: left; cursor: pointer;
+  }
+  nav button:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+  nav button[aria-current="true"] {
+    background: color-mix(in srgb, var(--accent) 20%, transparent);
+    font-weight: 600;
+  }
+  nav .count { color: var(--dim); font-size: .8rem; }
+
+  section.body { padding: 1.25rem 1.5rem 4rem; max-width: 62rem; }
+  h2 { font-size: 1.25rem; margin: 0 0 .2rem; }
+  .path { color: var(--dim); font-size: .8rem; margin-bottom: .9rem; }
+  .uses { margin-bottom: 1rem; font-size: .85rem; color: var(--dim); }
+
+  .card {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 7px; padding: .8rem 1rem; margin: 0 0 .8rem;
+  }
+  .card.excluded { opacity: .72; border-style: dashed; }
+  /* Out of force, and kept: the statement stands where it was written. */
+  .card.retired { opacity: .55; }
+  .card.retired h3 .mono:first-child { text-decoration: line-through; }
+  .card h3 { margin: 0 0 .35rem; font-size: 1rem; display: flex;
+    gap: .55rem; align-items: baseline; flex-wrap: wrap; }
+  .tag {
+    font-size: .68rem; text-transform: uppercase; letter-spacing: .07em;
+    color: var(--dim); border: 1px solid var(--line); border-radius: 999px;
+    padding: .05rem .45rem;
+  }
+  .means { color: var(--ink); white-space: pre-wrap; margin: .3rem 0 0; }
+  .because {
+    border-left: 2px solid var(--line); padding-left: .7rem;
+    color: var(--dim); white-space: pre-wrap; margin: .5rem 0 0;
+  }
+
+  table { border-collapse: collapse; width: 100%; margin: .5rem 0 0; font-size: .9rem; }
+  td { padding: .18rem .5rem .18rem 0; vertical-align: baseline; }
+  td.name { width: 34%; }
+  .tag.amount { color: var(--accent); border-color: var(--accent); }
+  tr.inherited td { color: var(--dim); }
+  .from { font-size: .75rem; color: var(--dim); }
+
+  .values { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .4rem; }
+  .values span {
+    border: 1px solid var(--line); border-radius: 4px;
+    padding: .05rem .4rem; font-size: .85rem;
+  }
+
+  a.ref { color: var(--accent); text-decoration: none; border-bottom: 1px dotted; cursor: pointer; }
+  a.ref:hover { border-bottom-style: solid; }
+
+  .mentions { margin-top: .5rem; font-size: .82rem; color: var(--dim); }
+  .links { margin: 0 0 .4rem; font-size: .82rem; color: var(--dim); }
+  .links span + span { margin-left: .9rem; }
+  .problems { margin-bottom: 1rem; }
+  .problem { font-size: .85rem; padding: .15rem 0; }
+  .problem.error { color: var(--error); }
+  .problem.warning { color: var(--warn); }
+  .empty { color: var(--dim); font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Specifications</h1>
+  <div class="totals" id="totals"></div>
+</header>
+<main>
+  <nav id="nav"></nav>
+  <section class="body" id="body"></section>
+</main>
+
+<script>
+const state = { world: null, module: null };
+
+async function boot() {
+  const response = await fetch('/api/world');
+  state.world = await response.json();
+  state.module = state.world.modules[0]?.name ?? null;
+  renderTotals();
+  renderNav();
+  renderBody();
+}
+
+function renderTotals() {
+  const t = state.world.totals;
+  const bits = [
+    `modules <b>${t.modules}</b>`,
+    `entities <b>${t.named}</b>`,
+    `requirements <b>${t.requirements}</b>`,
+    `exclusions <b>${t.exclusions}</b>`,
+    `replaced <b>${t.replaced}</b>`,
+    `errors <b class="${t.errors ? 'bad' : ''}">${t.errors}</b>`,
+    `warnings <b class="${t.warnings ? 'warn' : ''}">${t.warnings}</b>`,
+  ];
+  document.getElementById('totals').innerHTML = bits.map(b => `<span>${b}</span>`).join('');
+}
+
+function renderNav() {
+  const nav = document.getElementById('nav');
+  const withRequirements = state.world.modules.filter(m => m.declarations.some(d => d.kind === 'requirement'));
+  const dictionaries = state.world.modules.filter(m => !withRequirements.includes(m));
+  nav.innerHTML = '';
+  if (withRequirements.length) nav.append(group('specifications', withRequirements));
+  if (dictionaries.length) nav.append(group('vocabularies', dictionaries));
+}
+
+function group(title, modules) {
+  const box = document.createElement('div');
+  const head = document.createElement('div');
+  head.className = 'group';
+  head.textContent = title;
+  box.append(head);
+  for (const module of modules) {
+    const button = document.createElement('button');
+    button.setAttribute('aria-current', String(module.name === state.module));
+    const bad = module.problems.filter(p => p.severity === 'error').length;
+    button.innerHTML = `<span>${module.name}</span><span class="count">${
+      bad ? '● ' : ''}${module.declarations.length}</span>`;
+    button.onclick = () => { state.module = module.name; renderNav(); renderBody(); window.scrollTo(0, 0); };
+    box.append(button);
+  }
+  return box;
+}
+
+function escape(text) {
+  return text.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+}
+
+function withLinks(block) {
+  if (!block) return '';
+  let html = escape(block.text);
+  html = html.replace(/\[([^\[\]|]+?)(?:\|([^\[\]]*))?\]/g, (whole, target, display) =>
+    `<a class="ref" data-target="${escape(target.trim())}">${escape((display || target).trim())}</a>`);
+  return html;
+}
+
+function gotoLabel(label) {
+  // A label belongs to no module — it addresses a statement wherever it was
+  // written, so the module holding it is looked for rather than parsed out.
+  const module = state.world.modules.find(m =>
+    m.declarations.some(d => d.name === label && d.inForce !== undefined));
+  if (!module) return;
+  state.module = module.name;
+  renderNav();
+  renderBody();
+  show(document.getElementById('d-' + label));
+}
+
+function show(anchor) {
+  if (!anchor) return;
+  anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  anchor.animate([{ background: 'transparent' }, { background: 'rgba(138,90,43,.18)' }, { background: 'transparent' }], 1200);
+}
+
+function goto(target) {
+  // A card stands for a declaration: a discriminator and a member of an
+  // address lead to the same card as the name they hang on.
+  const name = target.replace(/[#.].*$/, '');
+  const [head, tail] = name.includes(':') ? name.split(':') : [state.module, name];
+  const module = state.world.modules.find(m => m.name === head);
+  if (!module) return;
+  state.module = head;
+  renderNav();
+  renderBody();
+  show(document.getElementById('d-' + (tail || name)));
+}
+
+function amountTags(amount) {
+  if (!amount) return '';
+  return amount.split(' ')
+    .map(word => `<span class="tag amount">${escape(word)}</span>`).join(' ');
+}
+
+function partRows(parts, inherited) {
+  const rows = [];
+  for (const part of parts) {
+    rows.push(`<tr><td class="name mono">${escape(part.name)}</td>
+      <td class="mono"><a class="ref" data-target="${escape(part.type)}">${escape(part.type)}</a>
+      ${amountTags(part.amount)}</td></tr>`);
+  }
+  for (const part of inherited) {
+    rows.push(`<tr class="inherited"><td class="name mono">${escape(part.name)}
+      <span class="from">from ${escape(part.inherited)}</span></td>
+      <td class="mono"><a class="ref" data-target="${escape(part.type)}">${escape(part.type)}</a>
+      ${amountTags(part.amount)}</td></tr>`);
+  }
+  return rows.length ? `<table>${rows.join('')}</table>` : '';
+}
+
+function labels(title, list) {
+  if (!list || !list.length) return '';
+  const written = list.map(label =>
+    `<a class="ref mono" data-label="${escape(label)}">${escape(label)}</a>`).join(', ');
+  return `<span>${title} ${written}</span>`;
+}
+
+function card(node) {
+  const parts = [];
+  const excluded = node.kind === 'exclude' ? ' excluded' : '';
+  const retired = node.inForce === false ? ' retired' : '';
+  parts.push(`<div class="card${excluded}${retired}" id="d-${escape(node.name)}">`);
+  parts.push(`<h3><span class="mono">${escape(node.name)}</span>
+    <span class="tag">${node.kindName}</span>
+    ${node.supertype ? `<span class="mono"><a class="ref" data-target="${escape(node.supertype)}">${escape(node.supertype)}</a></span>` : ''}
+    ${node.obligation ? `<span class="tag">${escape(node.obligation)}</span>` : ''}
+    ${retired ? '<span class="tag">out of force</span>' : ''}</h3>`);
+
+  // Both ends of every link. The two on the right are held by no file: a
+  // link is written on the statement that came second.
+  const links = labels('replaces', node.replaces) + labels('given', node.given)
+    + labels('replaced by', node.replacedBy) + labels('underlies', node.underlies);
+  if (links) parts.push(`<div class="links">${links}</div>`);
+
+  if (node.kind === 'entity') parts.push(partRows(node.parts || [], node.inherited || []));
+  if (node.kind === 'enum') {
+    parts.push(`<div class="values">${(node.values || []).map(v => `<span class="mono">${escape(v)}</span>`).join('')}</div>`);
+  }
+
+  if (node.states) parts.push(`<p class="means">${withLinks(node.states)}</p>`);
+  if (node.means) parts.push(`<p class="means">${withLinks(node.means)}</p>`);
+  if (node.because) parts.push(`<p class="because">${withLinks(node.because)}</p>`);
+
+  if (node.mentions && node.mentions.length) {
+    const links = node.mentions.map(m =>
+      `<a class="ref" data-target="${escape(m.module + ':' + m.name)}">${escape(m.name)}</a>`).join(', ');
+    parts.push(`<div class="mentions">mentioned by: ${links}</div>`);
+  }
+  parts.push('</div>');
+  return parts.join('');
+}
+
+function renderBody() {
+  const module = state.world.modules.find(m => m.name === state.module);
+  const body = document.getElementById('body');
+  if (!module) { body.innerHTML = '<p class="empty">No modules.</p>'; return; }
+
+  const chunks = [];
+  chunks.push(`<h2>${escape(module.name)}</h2><div class="path mono">${escape(module.path)} · language ${escape(module.language)}</div>`);
+  if (module.uses.length) chunks.push(`<div class="uses">uses: ${module.uses.map(escape).join(', ')}</div>`);
+  if (module.means) chunks.push(`<div class="card"><p class="means">${withLinks(module.means)}</p></div>`);
+
+  if (module.problems.length) {
+    chunks.push('<div class="problems">' + module.problems.map(p =>
+      `<div class="problem ${p.severity}">${p.line}:${p.column} — ${escape(p.message)}</div>`).join('') + '</div>');
+  }
+
+  const named = module.declarations.filter(d => ['entity', 'enum', 'value'].includes(d.kind));
+  const statements = module.declarations.filter(d => ['requirement', 'assume'].includes(d.kind));
+  const exclusions = module.declarations.filter(d => d.kind === 'exclude');
+
+  if (named.length) chunks.push('<h2 style="margin-top:1.4rem">Vocabulary</h2>' + named.map(card).join(''));
+  if (statements.length) chunks.push('<h2 style="margin-top:1.4rem">Requirements</h2>' + statements.map(card).join(''));
+  if (exclusions.length) chunks.push('<h2 style="margin-top:1.4rem">Outside the scope</h2>' + exclusions.map(card).join(''));
+
+  body.innerHTML = chunks.join('');
+  for (const link of body.querySelectorAll('a.ref')) {
+    link.onclick = () => link.dataset.label
+      ? gotoLabel(link.dataset.label)
+      : goto(link.dataset.target);
+  }
+}
+
+boot();
+</script>
+</body>
+</html>

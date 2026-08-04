@@ -1,0 +1,68 @@
+language 0.1.0
+module kubernetes
+  uses deploy, infrastructure, network, runtime, security, system
+  means
+    The units Kubernetes places workloads in, addresses them by, configures
+    them with and gives storage to — each declared a variety of a standard
+    one, and defined in the words of Kubernetes rather than of its
+    implementation.
+
+entity cluster : infrastructure:cluster
+  means
+    cluster: the machines Kubernetes places work upon, together with what
+    decides where each piece of work goes.
+
+entity node : infrastructure:host
+  means
+    node: one machine of a cluster, offering the processor, the memory and
+    the storage a workload is placed against.
+
+entity namespace : system:organization
+  means
+    namespace: a division of a cluster within which names do not repeat and
+    against which quotas and rights are set.
+
+entity pod : runtime:process
+  means
+    pod: the smallest thing Kubernetes places — one or more containers put
+    on one node together, sharing an address and a lifetime.
+
+entity container : infrastructure:container
+  means
+    container: one image running inside a pod, with limits of its own on
+    what it may consume.
+
+entity deployment : deploy:deployment
+  means
+    deployment: a wish for so many alike pods to be running, and the way
+    Kubernetes is to move from the pods running now to the pods wished for.
+
+entity service : network:endpoint
+  means
+    service: one name and one address standing for whichever pods answer to
+    a selector at the moment a request arrives.
+
+entity ingress : network:gateway
+  means
+    ingress: the way a request from outside the cluster reaches a service
+    within it, chosen by the host and the path asked for.
+
+entity config-map : deploy:configuration
+  means
+    config map: settings kept apart from the image, given to a pod as
+    variables of its environment or as files.
+
+entity secret : security:asset
+  means
+    secret: what a workload must have and no reader of the manifests may
+    see — a password, a key, a token.
+
+entity persistent-volume : infrastructure:volume
+  means
+    persistent volume: storage that outlives the pod using it, so that a
+    workload may be moved between nodes without losing what it wrote.
+
+entity resource-quota : infrastructure:resource-quota
+  means
+    resource quota: the ceiling a namespace may consume, counted over
+    everything placed within it.

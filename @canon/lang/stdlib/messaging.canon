@@ -1,0 +1,42 @@
+language 0.1.0
+module messaging
+  means
+    Exchange of self-contained messages between loosely coupled parties: the
+    meaning of messages, channels, subscriptions and facts of delivery.
+
+entity event : thing
+  means
+    event: an immutable fact about a change that occurred or a state observed.
+
+entity command : thing
+  means
+    command: an addressed intent to have a definite action performed.
+
+entity message : thing
+  means
+    message: a self-contained unit of transferred data representing an event,
+    a command or another exchange.
+
+entity channel : thing
+  means
+    channel: a logical path along which messages travel from publishers to
+    subscribers.
+
+entity publisher : thing
+  means
+    publisher: a party placing messages into a channel.
+
+entity subscriber : thing
+  means
+    subscriber: a party having declared an interest in receiving messages from
+    a channel.
+
+entity delivery : thing
+  means
+    delivery: a single attempt to convey a particular message to a particular
+    recipient.
+
+entity subscription : thing
+  means
+    subscription: a lasting rule binding a subscriber to the messages of a
+    channel that concern it.

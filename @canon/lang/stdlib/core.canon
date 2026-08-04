@@ -1,0 +1,35 @@
+language 0.1.0
+module core
+  means
+    Roots of the value hierarchy and their minimal refinements.
+
+value number : thing
+  means
+    number: a quantity that can be compared and ordered.
+
+value integer : number
+  means
+    integer: a number without a fractional part. Its sign is unrestricted.
+
+value decimal : number
+  means
+    decimal: a number written in decimal notation, with fractions of ten
+    represented exactly.
+
+value text : thing
+  means
+    text: a sequence of characters, compared character by character and not
+    decomposed into parts.
+
+value boolean : thing
+  means
+    boolean: one of exactly two values, true or false.
+
+value binary : thing
+  means
+    binary: a sequence of bytes carrying no character encoding.
+
+value moment : thing
+  means
+    moment: a point on a time scale, ordered with respect to other moments and
+    not summable with them.

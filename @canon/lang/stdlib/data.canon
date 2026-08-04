@@ -1,0 +1,35 @@
+language 0.1.0
+module data
+  means
+    Logical organisation of data: kinds of values, the structure of records,
+    their identity and the rules of admissibility, independent of how the data
+    is stored, transferred or displayed.
+
+entity schema : thing
+  means
+    schema: a formal description of the structure and constraints of a body of
+    data.
+
+entity record : thing
+  means
+    record: a composite value made of named fields and representing one
+    logical data object.
+
+entity field : thing
+  means
+    field: a named part of a record, having a definite type and value.
+
+entity identifier : thing
+  means
+    identifier: a value or a set of values distinguishing one record from
+    others within an established scope.
+
+entity constraint : thing
+  means
+    constraint: a rule determining which data values or combinations of values
+    are admissible.
+
+entity classification : thing
+  means
+    classification: a named category determining how data is handled according
+    to its meaning or sensitivity.

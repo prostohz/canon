@@ -1,0 +1,50 @@
+language 0.1.0
+module localization
+  means
+    Adaptation of the presentation of content and values to the linguistic and
+    regional expectations of a user, leaving the original meaning unchanged.
+
+entity locale : thing
+  means
+    locale: a named set of linguistic, regional and formatting rules applied
+    when presenting information to a user.
+
+entity language : thing
+  means
+    language: a natural language in which content is created or provided to a
+    user.
+
+entity region : thing
+  means
+    region: a geographic or administrative area determining the applicable
+    regional conventions.
+
+entity translation : thing
+  means
+    translation: localised content conveying the meaning of the original
+    content in another language.
+
+entity translatable-unit : thing
+  means
+    translatable unit: the smallest identifiable fragment of content for which
+    a translation is chosen independently.
+
+entity format-rule : thing
+  means
+    format rule: a rule for presenting a typed value in accordance with a
+    locale.
+
+entity time-zone : thing
+  means
+    time zone: the rules mapping moments in time to local date and time for a
+    definite area.
+
+entity currency-format : thing
+  means
+    currency format: a rule for presenting a monetary value and the
+    designation of its currency in accordance with a locale.
+
+entity fallback : thing
+  means
+    fallback: a rule for choosing another locale or language when the required
+    localised content is absent.

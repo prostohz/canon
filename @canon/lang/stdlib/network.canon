@@ -1,0 +1,71 @@
+language 0.1.0
+module network
+  means
+    Addressing, connectivity and data transfer between network parties,
+    including the paths of transfer and the means of applying rules to network
+    exchange.
+
+entity network : thing
+  means
+    network: a bounded area of connectivity within which endpoints can
+    exchange data under established rules.
+
+entity endpoint : thing
+  means
+    endpoint: an addressable party to network exchange.
+
+entity address : thing
+  means
+    address: a value identifying the location of an endpoint within a definite
+    system of network addressing.
+
+entity port : thing
+  means
+    port: a numeric identifier of a logical point of receiving or sending data
+    on a network node, for a definite transport protocol.
+
+entity protocol : thing
+  means
+    protocol: a set of rules for forming and transferring data between network
+    endpoints.
+
+entity connection : thing
+  means
+    connection: a time-limited context of data exchange between network
+    endpoints.
+
+entity route : thing
+  means
+    route: a rule for choosing the path of network data towards a given
+    destination.
+
+entity gateway : thing
+  means
+    gateway: a network node passing data between different networks or areas
+    of connectivity.
+
+entity proxy : thing
+  means
+    proxy: a network party accepting requests from one party and making
+    corresponding requests to another on its own behalf.
+
+entity load-balancer : thing
+  means
+    load balancer: a network intermediary distributing incoming requests among
+    several available recipients.
+
+entity firewall : thing
+  means
+    firewall: a means of permitting or denying network exchange on the basis
+    of given rules.
+
+entity d-n-s-name : thing
+  means
+    domain name: a hierarchical symbolic name resolved by the domain name
+    system into a network address or other data needed for network
+    interaction.
+
+entity network-policy : thing
+  means
+    network policy: a set of normative rules determining admissible network
+    connectivity.

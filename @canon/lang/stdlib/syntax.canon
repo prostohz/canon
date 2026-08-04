@@ -1,0 +1,79 @@
+language 0.1.0
+module syntax
+  means
+    The written form of a formal language: the units a text is made of, the
+    rules by which their order is admissible, and the tree a text is read
+    into, independent of what the text describes.
+
+entity grammar : thing
+  means
+    grammar: a formal description of the admissible order of the units of a
+    language.
+
+entity production : thing
+  means
+    production: a rule of a grammar defining one construct through other
+    constructs and units.
+
+entity terminal : thing
+  means
+    terminal: a unit of a grammar not defined through others and standing in
+    a text as it is written.
+
+entity nonterminal : thing
+  means
+    nonterminal: a unit of a grammar defined by productions and never
+    standing in a text by itself.
+
+entity token : thing
+  means
+    token: an indivisible unit of a text, singled out by its spelling and
+    carrying the kind it was recognised as.
+
+entity token-class : thing
+  means
+    token class: a named set of spellings recognised as tokens of one kind.
+
+entity keyword : thing
+  means
+    keyword: a word reserved by a language and recognised by its spelling
+    alone.
+
+entity literal : thing
+  means
+    literal: a token whose value is its own spelling, taken without further
+    interpretation.
+
+entity comment : thing
+  means
+    comment: a part of a text carried through parsing without effect on the
+    constructs it stands among.
+
+entity escape-sequence : thing
+  means
+    escape sequence: a spelling by which a character otherwise significant
+    to the grammar is written as itself.
+
+entity indentation : thing
+  means
+    indentation: the leading blank part of a line, by whose width the
+    nesting of constructs is judged.
+
+entity block : thing
+  means
+    block: a run of lines belonging to the construct that opens them.
+
+entity syntax-tree : thing
+  means
+    syntax tree: the constructs of one text arranged as the grammar admits
+    them, one node per construct.
+
+entity syntax-node : thing
+  means
+    syntax node: a single construct of a syntax tree, together with its
+    place in the text it was read from.
+
+entity lookahead : thing
+  means
+    lookahead: the number of units a parser may examine ahead of the one it
+    is deciding on.

@@ -1,0 +1,44 @@
+language 0.1.0
+module verification
+  means
+    Obtaining reproducible evidence that a statement is true or that a
+    requirement is met.
+
+entity verification : thing
+  means
+    verification: purposeful activity yielding evidence that a statement is
+    true or that a requirement is met.
+
+entity test : thing
+  means
+    test: an executable check of the behaviour of an object under given inputs
+    and conditions.
+
+entity test-case : thing
+  means
+    test case: a definite specification of the preconditions, inputs, actions
+    and expected results of one trial.
+
+entity proof : thing
+  means
+    proof: a finite justification that a statement follows from accepted
+    axioms and rules of inference.
+
+entity oracle : thing
+  means
+    oracle: a rule or mechanism determining the expected result of a test
+    case.
+
+entity evidence : thing
+  means
+    evidence: a retained result of a verification, confirming or refuting the
+    statement under check.
+
+entity coverage : thing
+  means
+    coverage: a measure of how much of an established set of objects or
+    conditions the checks reach.
+
+entity result : thing
+  means
+    result: the formalised outcome of a verification together with its status.

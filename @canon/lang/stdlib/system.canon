@@ -1,0 +1,40 @@
+language 0.1.0
+module system
+  means
+    General notions of a software system, its large constituent parts, the
+    capabilities it provides and the parties involved, independent of any
+    technical representation or lifecycle stage.
+
+entity app : thing
+  means
+    app: a software system providing a coherent set of capabilities to
+    definite users or to other systems.
+
+entity component : thing
+  means
+    component: a replaceable part of an app with an explicitly defined
+    responsibility and interaction boundary.
+
+entity service : thing
+  means
+    service: a component providing its capabilities through a programmatic
+    interface at run time.
+
+entity capability : thing
+  means
+    capability: an observable ability of a system to achieve a definite
+    outcome, without stating how it is achieved.
+
+entity user : thing
+  means
+    user: a subject interacting with an app directly in order to reach a goal.
+
+entity organization : thing
+  means
+    organization: a lasting association of subjects holding an identity and
+    responsibility of its own.
+
+entity environment : thing
+  means
+    environment: a named set of operating conditions for an app, such as
+    development or production.

@@ -1,0 +1,40 @@
+language 0.1.0
+module deploy
+  means
+    Preparation of software artifacts for release and the placement of
+    releases into environments intended for execution.
+
+entity artifact : thing
+  means
+    artifact: an immutable result of a build, fit for storage, transfer or
+    deployment.
+
+entity build : thing
+  means
+    build: a reproducible process producing artifacts from definite source
+    materials and settings.
+
+entity release : thing
+  means
+    release: an identified coherent set of artifacts and information, approved
+    for deployment.
+
+entity deployment : thing
+  means
+    deployment: a single act of placing a definite release onto a definite
+    target with a definite configuration.
+
+entity target : thing
+  means
+    target: an addressable computing environment, or part of one, onto which a
+    release may be placed.
+
+entity environment : thing
+  means
+    environment: the deployment targets and infrastructure conditions in which
+    a system runs.
+
+entity configuration : thing
+  means
+    configuration: a set of values determining the behaviour of a deployed
+    release without changing its artifacts.

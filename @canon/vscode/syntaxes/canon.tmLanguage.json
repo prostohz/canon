@@ -1,0 +1,209 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Canon",
+  "scopeName": "source.canon",
+  "patterns": [
+    {
+      "include": "#comment"
+    },
+    {
+      "include": "#prose"
+    },
+    {
+      "include": "#language"
+    },
+    {
+      "include": "#module"
+    },
+    {
+      "include": "#uses"
+    },
+    {
+      "include": "#declaration"
+    },
+    {
+      "include": "#obligation"
+    },
+    {
+      "include": "#link"
+    },
+    {
+      "include": "#part"
+    },
+    {
+      "include": "#keyword"
+    }
+  ],
+  "repository": {
+    "comment": {
+      "name": "comment.line.number-sign.canon",
+      "match": "#.*$"
+    },
+    "prose": {
+      "comment": "A block of free text: from a word on its own line until the indentation drops.",
+      "begin": "^([ ]*)(means|states|because)[ ]*$",
+      "beginCaptures": {
+        "2": {
+          "name": "keyword.other.clause.canon"
+        }
+      },
+      "while": "^(?:\\1[ ]+(?=[^ ])|[ ]*$)",
+      "name": "string.unquoted.prose.canon",
+      "patterns": [
+        {
+          "include": "#reference"
+        }
+      ]
+    },
+    "reference": {
+      "comment": "An address, a bar, a caption. The address is taken apart: the module qualifying the name, the name, the name given here after a hash, the part or the value of an enum after a dot. A caption may break across lines, so the caption is a region and not a part of the match. Two scopes stand on each part of the address: a theme knowing the second colours by it, a theme knowing neither falls back to the first rather than to the colour of the prose around it.",
+      "begin": "(?<!\\\\)(\\[)(?:([a-z][a-z0-9-]*)(:))?([a-z][a-z0-9-]*)(?:(#)([a-z][a-z0-9-]*))?(?:(\\.)([a-z][a-z0-9-]*))?(\\|)",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.definition.reference.canon"
+        },
+        "2": {
+          "name": "storage.type entity.name.namespace.canon"
+        },
+        "3": {
+          "name": "punctuation.separator.canon"
+        },
+        "4": {
+          "name": "storage.type entity.name.type.reference.canon"
+        },
+        "5": {
+          "name": "punctuation.separator.canon"
+        },
+        "6": {
+          "name": "variable.other.enummember variable.other.reference.canon"
+        },
+        "7": {
+          "name": "punctuation.separator.canon"
+        },
+        "8": {
+          "name": "variable.other.enummember variable.other.member.canon"
+        },
+        "9": {
+          "name": "punctuation.separator.canon"
+        }
+      },
+      "contentName": "string.unquoted.display.canon",
+      "end": "(\\])",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.reference.canon"
+        }
+      },
+      "name": "meta.reference.canon"
+    },
+    "module": {
+      "match": "^[ ]*(module)[ ]+([a-z][a-z0-9-]*)",
+      "captures": {
+        "1": {
+          "name": "keyword.control.module.canon"
+        },
+        "2": {
+          "name": "entity.name.namespace.canon"
+        }
+      }
+    },
+    "uses": {
+      "match": "^[ ]*(uses)\\b",
+      "captures": {
+        "1": {
+          "name": "keyword.control.uses.canon"
+        }
+      }
+    },
+    "declaration": {
+      "patterns": [
+        {
+          "match": "^[ ]*(entity|enum|value)[ ]+([a-z][a-z0-9-]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.declaration.canon"
+            },
+            "2": {
+              "name": "entity.name.type.canon"
+            }
+          }
+        },
+        {
+          "match": "^[ ]*(requirement|assume|exclude)(?:[ ]+([A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+))?",
+          "captures": {
+            "1": {
+              "name": "keyword.control.declaration.canon"
+            },
+            "2": {
+              "name": "entity.name.label.canon"
+            }
+          }
+        }
+      ]
+    },
+    "obligation": {
+      "match": "^[ ]*(obligation)[ ]+(mandatory|recommended)",
+      "captures": {
+        "1": {
+          "name": "keyword.other.clause.canon"
+        },
+        "2": {
+          "name": "constant.language.obligation.canon"
+        }
+      }
+    },
+    "link": {
+      "comment": "One statement addressing another by label. The labels are coloured as labels are on a declaration, so that the two ends of a link look alike.",
+      "begin": "^[ ]*(replaces|given)\\b",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.other.clause.canon"
+        }
+      },
+      "end": "$",
+      "patterns": [
+        {
+          "match": "[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+",
+          "name": "entity.name.label.canon"
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.canon"
+        }
+      ]
+    },
+    "part": {
+      "comment": "The name of a part, its type, and how much of it there is.",
+      "match": "^[ ]+([a-z][a-z0-9-]*)[ ]*(:)[ ]*([a-z][a-z0-9-]*(?::[a-z][a-z0-9-]*)?)((?:[ ]+(?:many|optional))*)",
+      "captures": {
+        "1": {
+          "name": "variable.other.member.canon"
+        },
+        "2": {
+          "name": "punctuation.separator.canon"
+        },
+        "3": {
+          "name": "entity.name.type.reference.canon"
+        },
+        "4": {
+          "name": "keyword.other.amount.canon"
+        }
+      }
+    },
+    "keyword": {
+      "match": "\\b(language|module|uses|means|entity|enum|value|requirement|assume|exclude|states|because|obligation|replaces|given|many|optional)\\b",
+      "name": "keyword.other.canon"
+    },
+    "language": {
+      "match": "^(language)[ ]+([0-9]+\\.[0-9]+\\.[0-9]+)",
+      "captures": {
+        "1": {
+          "name": "keyword.control.language.canon"
+        },
+        "2": {
+          "name": "constant.numeric.version.canon"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+language 0.1.0
+module privacy
+  means
+    Lawful and purposeful handling of personal data throughout its lifecycle.
+
+entity personal-data : thing
+  means
+    personal data: data relating to an identified or identifiable natural
+    person.
+
+entity data-subject : thing
+  means
+    data subject: the natural person to whom personal data relates.
+
+entity processing : thing
+  means
+    processing: a single operation, or a coherent set of operations, upon
+    personal data.
+
+entity purpose : thing
+  means
+    purpose: the definite expected outcome for the sake of which personal data
+    is processed.
+
+entity legal-basis : thing
+  means
+    legal basis: an established ground making a definite processing of
+    personal data admissible.
+
+entity consent : thing
+  means
+    consent: a permission expressed by a data subject for definite processing
+    for definite purposes.
+
+entity retention-policy : thing
+  means
+    retention policy: the rules determining the term and conditions of keeping
+    and deleting data.

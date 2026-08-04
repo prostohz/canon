@@ -1,0 +1,38 @@
+language 0.1.0
+module observability
+  means
+    Obtaining and presenting external evidence by which the internal execution
+    and state of a running system can be judged.
+
+entity signal : thing
+  means
+    signal: externally available evidence about the internal execution or
+    state of a system.
+
+entity log : thing
+  means
+    log record: a discrete structured signal about an event, formed at a
+    definite moment.
+
+entity metric : thing
+  means
+    metric: a named time series of numeric observations of a system.
+
+entity trace : thing
+  means
+    trace: a connected representation of one operation passing through several
+    stretches of execution.
+
+entity span : thing
+  means
+    span: a time-bounded part of execution belonging to one trace.
+
+entity alert : thing
+  means
+    alert: a signal that a given condition requiring attention or action has
+    been met.
+
+entity dashboard : thing
+  means
+    dashboard: an organised presentation of signals for judging the state of a
+    system.

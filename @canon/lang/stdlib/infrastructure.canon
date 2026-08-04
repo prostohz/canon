@@ -1,0 +1,49 @@
+language 0.1.0
+module infrastructure
+  means
+    Provided and managed technical resources forming the computing foundation
+    on which a software system is placed and runs.
+
+entity resource : thing
+  means
+    resource: a managed technical entity providing computing, network or disk
+    capability for the running of a system.
+
+entity host : thing
+  means
+    host: a physical or virtual computing system able to run software
+    processes.
+
+entity cluster : thing
+  means
+    cluster: a group of hosts or other homogeneous resources managed as a
+    single whole.
+
+entity container : thing
+  means
+    container: an isolated execution environment sharing the kernel of the
+    operating system with other such environments.
+
+entity region : thing
+  means
+    region: a geographically defined area holding the infrastructure resources
+    of one provider.
+
+entity zone : thing
+  means
+    zone: a part of a region isolated with respect to failures.
+
+entity volume : thing
+  means
+    volume: an addressable resource of persistent block or file storage,
+    attachable to a computing environment.
+
+entity resource-quota : thing
+  means
+    resource quota: an established upper boundary of the available or consumed
+    amount of an infrastructure resource.
+
+entity provider : thing
+  means
+    provider: a subject or system providing infrastructure resources and
+    managing their underlying environment.

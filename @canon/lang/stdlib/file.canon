@@ -1,0 +1,40 @@
+language 0.1.0
+module file
+  means
+    Named containers of data offered by a file system, the way they are
+    addressed, and the manner in which they are gathered for processing.
+
+entity file-system : thing
+  means
+    file system: a named hierarchy of containers within which data is
+    addressed by paths.
+
+entity file : thing
+  means
+    file: a named container of data, retained beyond the execution that
+    wrote it.
+
+entity directory : thing
+  means
+    directory: a container holding files and other directories and giving
+    them their place in a hierarchy.
+
+entity path : thing
+  means
+    path: the sequence of names by which a file or a directory is addressed
+    within a file system.
+
+entity file-name : thing
+  means
+    file name: the name distinguishing a file among the others of one
+    directory.
+
+entity extension : thing
+  means
+    extension: the trailing part of a file name by which the kind of its
+    content is declared.
+
+entity file-set : thing
+  means
+    file set: the files gathered for one processing, regardless of the
+    directories they were found in.

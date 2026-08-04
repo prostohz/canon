@@ -1,0 +1,53 @@
+{
+  "name": "@canon/studio",
+  "version": "0.1.0",
+  "description": "A canon set in a browser: the vocabulary, the requirements and their links, as the tool sees them",
+  "keywords": ["canon", "specification", "requirements", "vocabulary"],
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/prostohz/canon",
+  "bugs": "https://github.com/prostohz/canon/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prostohz/canon.git",
+    "directory": "@canon/studio"
+  },
+  "type": "module",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "default": "./dist/src/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "canon-studio": "dist/src/bin.js"
+  },
+  "files": [
+    "dist/src",
+    "public",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@canon/lang": "^0.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "tsc",
+    "prepack": "node -e \"require('fs').copyFileSync('../../LICENSE', 'LICENSE')\"",
+    "install:local": "npm install --no-save ../lang",
+    "test": "tsc && node --test dist/test/*.test.js"
+  }
+}

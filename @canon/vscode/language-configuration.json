@@ -1,0 +1,16 @@
+{
+  "comments": {
+    "lineComment": "#"
+  },
+  "brackets": [["[", "]"]],
+  "autoClosingPairs": [{ "open": "[", "close": "]" }],
+  "surroundingPairs": [["[", "]"]],
+  "wordPattern": "[A-Za-z][A-Za-z0-9-]*(?::[a-z][a-z0-9-]*)?",
+  "indentationRules": {
+    "increaseIndentPattern": "^\\s*(module|entity|enum|requirement|assume|value|unit|means|states|because)\\b.*$",
+    "decreaseIndentPattern": "^\\s*$"
+  },
+  "folding": {
+    "offSide": true
+  }
+}

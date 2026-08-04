@@ -1,0 +1,142 @@
+(* The canon specification language — the collected grammar.              *)
+(* Normative together with language.md: the admissible order of tokens is *)
+(* set here, the meaning of the constructs is in the prose.               *)
+
+(* --- Conventions ------------------------------------------------------- *)
+(* Terminals in quotes are keywords and signs.                            *)
+(* Terminals in CAPITALS are token classes produced by the lexer.         *)
+(* INDENT and DEDENT come from the lexer on a change of indentation;      *)
+(* indentation is spaces.                                                 *)
+(* A blank line and a comment line ("#" to end of line) are insignificant.*)
+(* Lookahead is one token. There is no place that needs more.             *)
+(*                                                                        *)
+(* A keyword is accepted as a name wherever the grammar offers no choice: *)
+(* after "entity", "uses", a colon and the like. A choice arises only at  *)
+(* the start of a line inside a block, and there a name cannot coincide   *)
+(* with a clause of that block: a part is not called "means", nor is a    *)
+(* value of an enum. Otherwise the entities data:value and                *)
+(* requirements:obligation would be inexpressible.                        *)
+(*                                                                        *)
+(* "mandatory" and "recommended" are written in quotes below and are all  *)
+(* the same no keywords: they are reserved nowhere, the lexer gives a     *)
+(* NAME, and only the one position after "obligation" admits the two.     *)
+
+(* --- Token classes ----------------------------------------------------- *)
+(* NAME    product, page-load-time   lowercase letters, digits, hyphen    *)
+(* QNAME   data:record               name of a foreign module, qualified  *)
+(* LABEL   R-014, NFR-7              label of a requirement               *)
+(* VERSION 0.1.0                     version of the format                *)
+(* TEXT    an indented block         free text with references            *)
+(*                                                                        *)
+(* A TEXT block is opened by a keyword standing alone on its line. The    *)
+(* block ends at the first line indented less; blank lines inside are     *)
+(* kept, trailing ones are dropped.                                       *)
+
+(* --- File -------------------------------------------------------------- *)
+
+spec         = language_decl, module_decl, { declaration } ;
+
+language_decl = "language", VERSION, NEWLINE ;
+
+module_decl  = "module", name, NEWLINE,
+               [ INDENT, { uses }, [ means ], DEDENT ] ;
+
+uses         = "uses", name, { ",", name }, NEWLINE ;
+
+declaration  = entity_decl | enum_decl | value_decl
+             | requirement | assumption | exclusion ;
+
+(* --- Entity ------------------------------------------------------------ *)
+
+entity_decl  = "entity", name, [ ":", ref ], NEWLINE,
+               [ INDENT, { part | means }, DEDENT ] ;
+
+part         = name, ":", ref, { amount }, NEWLINE ;
+
+(* Either order, each at most once. Neither is exactly one, required. *)
+amount       = "many" | "optional" ;
+
+(* --- Enumeration and value --------------------------------------------- *)
+
+enum_decl    = "enum", name, NEWLINE,
+               INDENT, { name, NEWLINE | means }, DEDENT ;
+
+value_decl   = "value", name, ":", ref, NEWLINE,
+               [ INDENT, means, DEDENT ] ;
+
+(* --- Requirement and assumption ---------------------------------------- *)
+
+requirement  = "requirement", LABEL, NEWLINE,
+               [ INDENT, { states | because | obligation | replaces | given },
+                 DEDENT ] ;
+
+(* An assumption carries no "given": it would make assumptions a           *)
+(* hierarchy, and what falls with one would stop being a plain list.         *)
+assumption   = "assume", [ LABEL ], NEWLINE,
+               [ INDENT, { states | because | replaces }, DEDENT ] ;
+
+exclusion    = "exclude", [ LABEL ], NEWLINE,
+               [ INDENT, { states | because | replaces | given }, DEDENT ] ;
+
+states       = "states",  NEWLINE, TEXT ;
+because      = "because", NEWLINE, TEXT ;
+means        = "means",   NEWLINE, TEXT ;
+obligation   = "obligation", ( "mandatory" | "recommended" ), NEWLINE ;
+
+(* --- Link -------------------------------------------------------------- *)
+(* One statement addressing another, by label. Written like "uses": a list  *)
+(* on the line, and as many lines as are wanted.                            *)
+
+replaces     = "replaces", labels ;
+given        = "given",    labels ;
+labels       = LABEL, { ",", LABEL }, NEWLINE ;
+
+(* --- Names ------------------------------------------------------------- *)
+
+name         = NAME | keyword ;
+ref          = QNAME | name ;
+
+(* --- Inside a text block ------------------------------------------------ *)
+(* A TEXT block is not parsed, so these are no tokens of the grammar       *)
+(* above. What stands between the brackets has a fixed shape all the same. *)
+
+reference    = "[", address, "|", caption, "]" ;
+address      = [ NAME, ":" ], NAME, [ "#", NAME ], [ ".", NAME ] ;
+caption      = ? any characters but "[" and "]" ? ;
+
+keyword      = "language" | "module" | "uses" | "means" | "entity"
+             | "enum" | "value" | "requirement" | "assume"
+             | "exclude" | "states" | "because"
+             | "obligation" | "replaces" | "given"
+             | "many" | "optional" ;
+
+(* --- Constraints outside the grammar ------------------------------------ *)
+(* Checked after parsing; not expressible by the grammar:                 *)
+(*   - an enum holds at least one value;                                  *)
+(*   - a requirement, an assumption and an exclusion have "states";       *)
+(*   - "states", "because", "obligation", "means" — at most once each;    *)
+(*   - the version of the format matches the version of the tool;         *)
+(*   - the module name matches the file name, module names do not repeat; *)
+(*   - a name is declared once in a module;                               *)
+(*   - the supertype of an entity is an entity, of a value a value;       *)
+(*   - the chain of supertypes does not close into a cycle;               *)
+(*   - the type of a part resolves and is not "thing";                    *)
+(*   - the name of a part is unique and does not override an inherited    *)
+(*     one;                                                               *)
+(*   - a value of an enum does not repeat;                                *)
+(*   - a reference [name] resolves; a label inside prose is prose and is  *)
+(*     not checked;                                                       *)
+(*   - the label of a link is carried by a statement of the set;          *)
+(*   - the chain of "replaces" does not close into a cycle;               *)
+(*   - the label of "given" is carried by an assumption;                  *)
+(*   - an address carries a caption, and the caption is not empty;        *)
+(*   - the member of an address is a part of that entity or a value of    *)
+(*     that enum; a value and "thing" carry no member;                    *)
+(*   - "#" introduces a name for one thing of that type: it stands once   *)
+(*     in a text, repeats no declared name, carries no member, and every  *)
+(*     later address on that name is the name alone;                      *)
+(*   - a text that names things of a type does not address that type as   *)
+(*     a thing; a value of an enum is reached through the enum always;    *)
+(*   - the module of a reference is listed in "uses", where "uses" is     *)
+(*     written;                                                           *)
+(*   - the label of a requirement is unique across the whole set.         *)

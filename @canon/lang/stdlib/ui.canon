@@ -1,0 +1,39 @@
+language 0.1.0
+module ui
+  means
+    The user interface: the presentations, controls, actions, navigation and
+    layout available to a user.
+
+entity screen : thing
+  means
+    screen: an addressable area of the user interface presenting the user with
+    a coherent context of interaction.
+
+entity view : thing
+  means
+    view: a visual or other user-facing projection of data, leaving the
+    identity of the projected data unchanged.
+
+entity control : thing
+  means
+    control: an interactive element of the interface through which a user
+    enters data or initiates an action.
+
+entity action : thing
+  means
+    action: a semantically meaningful operation initiated through the user
+    interface.
+
+entity navigation : thing
+  means
+    navigation: a change of the current interface context from one screen or
+    view to another.
+
+entity platform : thing
+  means
+    platform: a class of user environment determining the available means of
+    display and input.
+
+entity layout : thing
+  means
+    layout: the rules of spatial arrangement of interface elements.
