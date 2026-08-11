@@ -95,12 +95,16 @@ names the versions of the other two, not their paths, and takes them from
 beside itself in a checkout — `npm run install:local`.
 
 **Nothing of the language is copied into a project.** An init writes
-`.canon/spec` and a manifest naming the package `@canon/lang` — never a
-path to it. A project may name its own package instead and speak its own
-vocabulary; `@canon/cli/README.md` has the shape of the manifest and the
-rules of resolution, `src/manifest.ts` implements them. What follows for
-this repository: `.canon/canon.toml` names `@canon/lang`, which resolves to
-the package the repository holds, the tool resolving itself.
+`.canon/spec` and a manifest whose one list names the package `@canon/lang`
+beside the project's own directories — never a path to it. The package
+answers for what it holds: its `canon` field says where in it the modules,
+the definition and the examples lie, so the set names it once and the tool
+prints where each resolved. A project may name its own package instead and
+speak its own vocabulary; `@canon/cli/README.md` has the shape of the
+manifest and the rules of resolution, `src/manifest.ts` implements them.
+What follows for this repository: `.canon/canon.toml` names `@canon/lang`,
+which resolves to the package the repository holds, the tool resolving
+itself.
 
 The price of it, taken knowingly: a specification cannot be resolved
 without the package declaring its vocabulary, and a global install records

@@ -1,14 +1,23 @@
 ---
-description: Independently review whether code and tests conform to changed Canon specifications. Use for review, verification, or readiness checks; do not edit.
+description: Independently review whether code and tests conform to changed Canon specifications. Use after implementing a Canon difference, not for ordinary code review.
 ---
 
-## In this skill
+# Implementation review
 
-- Remain read-only.
-- Compare both differences against their merge base and report findings
-  before any summary.
+Remain read-only. The review itself belongs to the
+`{reviewer}` subagent: this context has inherited what is
+under review and cannot judge it. Reach no verdict of your own here, before
+or after the reviewer's.
 
-Delegate the review itself to the `{reviewer}` subagent and
-wait for its findings. Do not reach the conclusions of a review in this
-context: it has inherited what is under review. The brief that reviewer
-reads is its own; nothing of it belongs here.
+1. Establish the difference as the workflow defines it, and separate the
+   changed Canon modules from the changed code and tests. If nothing in the
+   Canon set changed, stop and say so: there is nothing to review against.
+2. Hand the review to the
+   `{reviewer}` subagent — the base, the two lists of changed
+   files, and the person's request as the person wrote it — and wait for its
+   findings.
+3. Report the findings as they came back, most serious first, before any
+   summary of your own. Repair nothing: the next round of implementation is
+   the person's to start.
+4. Say which findings the session leaves standing. They live nowhere but this
+   report, so name them where the person can keep them.

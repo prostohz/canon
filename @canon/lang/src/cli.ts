@@ -1,5 +1,6 @@
 import { Diagnostic, ERROR, WARNING } from "./errors.js";
-import { ManifestError, discover, whole } from "./manifest.js";
+import { ManifestError, discover } from "./manifest.js";
+import type { Source } from "./manifest.js";
 import { resolve } from "./resolver.js";
 import { World, load, replaced } from "./world.js";
 
@@ -26,6 +27,22 @@ function section(title: string, items: string[]): void {
 
 function row(title: string, count: number): string {
   return `  ${title.padEnd(16)}${String(count).padStart(5)}`;
+}
+
+/**
+ * Where the set was read from, resolved. A package is named in the manifest
+ * and found wherever it was installed; whoever needs the definition of the
+ * language or an example of a set written in it is told the place instead of
+ * looking for it.
+ */
+function read(sources: Source[]): void {
+  console.log("read");
+  for (const source of sources) {
+    console.log(`  ${source.named.padEnd(20)}${source.path}`);
+    if (source.docs !== null) console.log(`    definition        ${source.docs}`);
+    if (source.examples !== null) console.log(`    examples          ${source.examples}`);
+  }
+  console.log();
 }
 
 function report(world: World, diagnostics: Diagnostic[]): void {
@@ -79,11 +96,14 @@ export function parseArguments(argv: string[]): Arguments {
 
 export function check(args: Arguments): number {
   let { paths } = args;
+  let sources: Source[] = [];
   if (!paths.length) {
     // The vocabulary is checked with the specifications written against it:
     // a name that does not resolve is an error wherever the name was
     // declared, and the set is not the set without it.
-    paths = whole(discover());
+    const manifest = discover();
+    sources = manifest.sources;
+    paths = manifest.paths;
   }
 
   const world = load(paths);
@@ -93,6 +113,7 @@ export function check(args: Arguments): number {
     Number(one.severity !== ERROR) - Number(other.severity !== ERROR)
     || (one.path < other.path ? -1 : one.path > other.path ? 1 : 0)
     || one.line - other.line || one.column - other.column);
+  if (sources.length) read(sources);
   report(world, diagnostics);
 
   if (diagnostics.some((item) => item.severity === ERROR)) return 1;

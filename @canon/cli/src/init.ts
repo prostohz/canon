@@ -9,20 +9,15 @@ import { installHarnesses } from "./harness/index.js";
 // here instead — nothing about the tool prefers this one.
 export const SOURCE = "@canon/lang";
 
-export const MANIFEST = `# The set: what is checked as one delivery.
+export const MANIFEST = `# The set: what is checked as one delivery. A name written as a path is a
+# directory of this project; anything else is a package, resolved where
+# whoever installed it put it — beside the project or globally. A package is
+# asked what it holds, so the vocabulary, the definition of the language and
+# the examples come from the one name.
 
-# The vocabulary the specifications are written against. A package, resolved
-# where it was installed — beside the project or globally — or a path,
-# written as one. Name your own here to speak your own vocabulary.
-stdlib = "${SOURCE}"
-
-# The definition of the language, for whoever reads or writes a
-# specification. Nothing is checked against it: it is prose.
-docs = "${SOURCE}"
-
-# What this project writes itself.
 paths = [
-    "spec",
+    "${SOURCE}",
+    "./spec",
 ]
 `;
 

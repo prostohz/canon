@@ -69,11 +69,9 @@ In a project of your own, in whatever language it is written:
 `init` writes `.canon/spec`, for the specifications of the project, and
 `.canon/canon.toml`, the manifest naming the set:
 
-    stdlib = "@canon/lang"
-    docs = "@canon/lang"
-
     paths = [
-        "spec",
+        "@canon/lang",
+        "./spec",
     ]
 
 It also detects or asks whether the project uses Codex or Claude Code, and
@@ -85,9 +83,11 @@ Nothing of the language is copied into the project. A name that is not
 written as a path is the name of a package, resolved where whoever
 installed it put it — beside the project or globally beside the tool — so
 the manifest carries nothing of the machine it was written on, and a
-project needs no `node_modules` of its own. Name your own package under
-`stdlib` to speak your own vocabulary; the language is updated by updating
-the package.
+project needs no `node_modules` of its own. The package is asked what it
+holds, so one name brings the vocabulary, the definition of the language and
+the examples at once, and `canon-cli check` prints where each resolved. Name
+your own package in the list to speak your own vocabulary; the language is
+updated by updating the package.
 
 A set may also be named on the command line, path by path, and then the
 manifest is not consulted at all.

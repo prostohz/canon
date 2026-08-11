@@ -38,8 +38,9 @@ prose, the grammar and the parser is a defect.
     cd ..
     npm run check -- stdlib
 
-The paths making up the set can be named in `.canon/canon.toml` instead, once,
-and the tool reads it when none are given. They are relative to `.canon`. They
-may also be named on the command line:
+The set can be named in `.canon/canon.toml` instead, once, and the tool reads
+it when none are given: paths, which are relative to `.canon`, and packages,
+which are resolved where they were installed. It may also be named on the
+command line:
 
     npm run check -- stdlib ../../../specs

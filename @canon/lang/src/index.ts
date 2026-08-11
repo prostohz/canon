@@ -35,7 +35,7 @@ export type {
   Value,
 } from "./nodes.js";
 export { parse } from "./parser.js";
-export { ManifestError, NAME, discover, find, read, whole } from "./manifest.js";
-export type { Manifest } from "./manifest.js";
+export { ManifestError, NAME, discover, find, read } from "./manifest.js";
+export type { Manifest, Source } from "./manifest.js";
 export { World, collect, load, replaced } from "./world.js";
 export { LABEL_RE, MEANS_MINIMUM, resolve } from "./resolver.js";

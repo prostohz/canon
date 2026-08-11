@@ -2,8 +2,14 @@
 
 Written to show what a set looks like when it is not the standard library.
 They are demonstrations, nothing depends on them, and they are not part of
-any delivery — the manifest at the root of the repository does not name this
-directory.
+any delivery — nothing is checked against what stands here.
+
+They do go out with the package, and a project reaches them without naming
+them: `package.json` says `"canon": { "examples": "examples" }`, so a set
+holding `@canon/lang` holds the way here too, and `canon-cli check` prints
+it. What is read from them is the shape a module takes — never vocabulary,
+which the standard library carries, and never requirements, which belong to
+the project reading them.
 
 Every file is a module of the [canon](../docs/README.md) language; the file
 name matches the module name. The directories mean nothing to the tool,

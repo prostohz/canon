@@ -45,40 +45,46 @@ being asked to work from. What a reviewer reads is written where the
 reviewer is installed and nowhere else: `canon-review` delegates and carries
 no copy of it, having inherited what is under review.
 
-Nothing of the language is copied in — the manifest names it:
-
-    stdlib = "@canon/lang"
-    docs = "@canon/lang"
+Nothing of the language is copied in — the manifest names it, and names
+nothing else:
 
     paths = [
-        "spec",
+        "@canon/lang",
+        "./spec",
     ]
 
-`stdlib` is the vocabulary the specifications are written against, checked
-along with them. `docs` is the definition of the language, for whoever
-reads or writes one; nothing is checked against it. `paths` are the
-directories whose `.canon` files the project writes itself.
+`paths` is the set: everything checked as one delivery, the vocabulary the
+specifications are written against along with the specifications. A name
+written as a path — beginning with `.` or `/` — is a directory of this
+project. Anything else is the name of a package, resolved where whoever
+installed it put it: beside the project, above it, or globally beside this
+tool. So the manifest carries nothing of the machine it was written on.
 
-A name that is not written as a path — not beginning with `.` or `/` — is
-the name of a package, and is resolved where whoever installed it put it:
-beside the project, above it, or globally beside this tool. So the manifest
-carries nothing of the machine it was written on.
+A package is asked what it holds, and answers in its own `package.json`:
+
+    "canon": { "stdlib": "modules", "docs": "prose", "examples": "shown" }
+
+`stdlib` is where in it the modules lie, `docs` the definition of the
+language and `examples` sets written in it. That is why the set names a
+package once rather than three times over: what lies where inside it is the
+package's business, not the project's. Neither the definition nor the
+examples is checked against anything — they are prose, and `canon-cli check`
+prints where they resolved so that whoever reads or writes a specification
+is told the place instead of looking for it. Without the field the package
+is the vocabulary, whole.
 
 ## A vocabulary of your own
 
-Name it instead:
+Another entry of the same list:
 
-    stdlib = "@acme/vocabulary"     # a package of your own
-    stdlib = "../vocabulary"        # or a directory at the project root
+    paths = [
+        "@acme/vocabulary",     # a package of your own
+        "../vocabulary",        # or a directory at the project root
+        "./spec",
+    ]
 
-A package says for itself where in it the modules lie, and its own
-definition of the language if it has one:
-
-    "canon": { "stdlib": "modules", "docs": "prose" }
-
-Without that field the package is the vocabulary, whole. Nothing in the
-tool prefers `@canon/lang` — an init writes that name because it is the one
-that comes with it.
+Nothing in the tool prefers `@canon/lang` — an init writes that name because
+it is the one that comes with it.
 
 ## Updating
 

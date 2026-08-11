@@ -8,13 +8,15 @@ export const NAME = join(".canon", "canon.toml");
 const FILE = "canon.toml";
 
 /**
- * What a package holding a vocabulary says about itself: where in it the
- * modules lie, and where the definition of the language does. Without the
- * field the package is the directory — a vocabulary and nothing else.
+ * What a package holding modules says about itself: where in it they lie,
+ * and where the definition of the language and sets written in it lie beside
+ * them. Without the field the package is the directory — modules and nothing
+ * else.
  */
 interface Carried {
   readonly stdlib?: string;
   readonly docs?: string;
+  readonly examples?: string;
 }
 
 export class ManifestError extends Error {
@@ -24,22 +26,35 @@ export class ManifestError extends Error {
   }
 }
 
-/** The written form of a set: the paths making up one delivery. */
-export interface Manifest {
+/**
+ * One entry of a set: modules, and what the package holding them says of
+ * itself. A directory says nothing and carries nothing but its modules.
+ */
+export interface Source {
+  /** As the manifest wrote it: the name of a package, or a path. */
+  readonly named: string;
+  /** Where the modules are read from. */
   readonly path: string;
-  readonly paths: string[];
   /**
-   * The vocabulary the specifications are written against, checked with
-   * them. Named as a package or as a directory; a project speaking its own
-   * vocabulary names its own package here.
-   */
-  readonly stdlib: string | null;
-  /**
-   * Where the definition of the language lies, for whoever reads or writes a
-   * specification. Nothing is checked against it — it is prose — but a set
-   * says where it is instead of leaving it to be found.
+   * The definition of the language, where the package carries one. Nothing
+   * is checked against it — it is prose — but whoever reads or writes a
+   * specification is told where it is rather than left to find it.
    */
   readonly docs: string | null;
+  /**
+   * Sets written in the language, whole and passing the checker, where the
+   * package carries any. For whoever needs the shape of one before writing
+   * another; nothing is checked against them either.
+   */
+  readonly examples: string | null;
+}
+
+/** The written form of a set: everything making up one delivery. */
+export interface Manifest {
+  readonly path: string;
+  readonly sources: Source[];
+  /** Where the modules of the set lie, in the order the manifest names them. */
+  readonly paths: string[];
 }
 
 function real(path: string): string {
@@ -67,8 +82,8 @@ function isPath(value: string): boolean {
   return value.startsWith(".") || isAbsolute(value);
 }
 
-/** Where in an installed package the named thing lies. */
-function inPackage(base: string, name: string, within: keyof Carried): string {
+/** What an installed package says of itself, and where it was found. */
+function inPackage(base: string, name: string): { at: string; carried: Carried } {
   // From the project first, where a dependency of it lies and where its lock
   // file records the version. Then from the tool, which is where a package
   // installed globally beside it can be seen: node resolution walks up from
@@ -97,9 +112,7 @@ function inPackage(base: string, name: string, within: keyof Carried): string {
   } catch {
     throw new Error("its manifest cannot be read");
   }
-  // A package that says nothing of itself is taken for the thing entire: a
-  // vocabulary is a directory of modules and needs no more said about it.
-  return join(dirname(manifest), carried[within] ?? ".");
+  return { at: dirname(manifest), carried };
 }
 
 /** Looks for a manifest in a directory and in the ones above it. */
@@ -127,47 +140,46 @@ export function read(path: string): Manifest {
   const base = dirname(path);
   const table = content as Record<string, unknown>;
 
-  function entries(key: string): string[] {
-    const value = table[key] ?? [];
-    if (!Array.isArray(value) || value.some((item) => typeof item !== "string")) {
-      throw new ManifestError(`${path}: "${key}" is a list of paths`);
-    }
-    return (value as string[]).map((item) => resolve(base, item));
+  const value = table.paths ?? [];
+  if (!Array.isArray(value) || value.some((item) => typeof item !== "string")) {
+    throw new ManifestError(`${path}: "paths" is a list of paths and package names`);
   }
 
-  function entry(key: string, within: keyof Carried): string | null {
-    const value = table[key];
-    if (value === undefined) return null;
-    if (typeof value !== "string") {
-      throw new ManifestError(`${path}: "${key}" names a package or a path`);
+  /**
+   * A directory is a directory of modules and nothing else; a package is
+   * asked what it holds, and answers for the modules, the definition of the
+   * language and the examples at once. That is why the set names a package
+   * once and not three times: what lies where inside it is its own business.
+   */
+  function source(named: string): Source {
+    if (isPath(named)) {
+      return { named, path: resolve(base, named), docs: null, examples: null };
     }
-    if (isPath(value)) return resolve(base, value);
+    let found: { at: string; carried: Carried };
     try {
-      return inPackage(base, value, within);
+      found = inPackage(base, named);
     } catch (error) {
       throw new ManifestError(
-        `${path}: "${key}" names the package "${value}", and `
+        `${path}: "paths" names the package "${named}", and `
         + `${error instanceof Error ? error.message : String(error)}`,
       );
     }
+    const within = (part?: string): string | null =>
+      part === undefined ? null : join(found.at, part);
+    return {
+      named,
+      // A package that says nothing of itself is taken for the thing entire.
+      path: join(found.at, found.carried.stdlib ?? "."),
+      docs: within(found.carried.docs),
+      examples: within(found.carried.examples),
+    };
   }
 
-  const manifest: Manifest = {
-    path,
-    paths: entries("paths"),
-    stdlib: entry("stdlib", "stdlib"),
-    docs: entry("docs", "docs"),
-  };
-  if (!manifest.paths.length) {
+  const sources = (value as string[]).map(source);
+  if (!sources.length) {
     throw new ManifestError(`${path}: "paths" names no path`);
   }
-  return manifest;
-}
-
-/** The whole set a manifest names: the vocabulary and what is written on it. */
-export function whole(manifest: Manifest): string[] {
-  return manifest.stdlib === null
-    ? manifest.paths : [manifest.stdlib, ...manifest.paths];
+  return { path, sources, paths: sources.map((item) => item.path) };
 }
 
 /** The manifest of the delivery the current directory belongs to. */

@@ -6,7 +6,7 @@ import { dirname, join } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
-import { read, whole } from "@canon/lang";
+import { read } from "@canon/lang";
 
 import { detectHarnesses } from "../src/harness/index.js";
 import { init } from "../src/init.js";
@@ -51,9 +51,8 @@ test("init names the language as a package, not as a place", async () => {
   await init({ root });
 
   const content = await readFile(manifest(root), "utf8");
-  assert.match(content, /"spec"/);
-  assert.equal(named(content, /stdlib = "([^"]+)"/), "@canon/lang");
-  assert.equal(named(content, /docs = "([^"]+)"/), "@canon/lang");
+  assert.match(content, /"\.\/spec"/);
+  assert.equal(named(content, /"(@canon\/lang)"/), "@canon/lang");
 
   // Nothing of the machine it was run on: the manifest travels with the
   // project, and the package is found wherever the next machine put it.
@@ -67,7 +66,7 @@ test("the set a manifest names is the vocabulary and what is written on it", asy
   const root = await project();
   await init({ root });
 
-  const set = whole(read(manifest(root)));
+  const set = read(manifest(root)).paths;
 
   assert.equal(set.length, 2);
   assert.match(await readFile(join(set[0], "core.canon"), "utf8"), /^language /);
@@ -86,14 +85,14 @@ test("init keeps the spec and the manifest of the project", async () => {
   const root = await project();
   await init({ root });
   await writeFile(join(root, ".canon", "spec", "own.canon"), "language 0.1.0\n");
-  await writeFile(manifest(root), "paths = [\"elsewhere\"]\n");
+  await writeFile(manifest(root), "paths = [\"./elsewhere\"]\n");
 
   const done = await init({ root });
 
   assert.equal(await readFile(join(root, ".canon", "spec", "own.canon"), "utf8"),
     "language 0.1.0\n");
   assert.equal(await readFile(manifest(root), "utf8"),
-    "paths = [\"elsewhere\"]\n");
+    "paths = [\"./elsewhere\"]\n");
   assert.ok(done.some((line) => line.startsWith("kept      .canon/canon.toml")));
 });
 
@@ -104,7 +103,8 @@ test("force replaces the manifest", async () => {
 
   await init({ root, force: true });
 
-  assert.match(await readFile(manifest(root), "utf8"), /paths = \[\n    "spec"/);
+  assert.match(await readFile(manifest(root), "utf8"),
+    /paths = \[\n    "@canon\/lang",\n    "\.\/spec"/);
 });
 
 test("init writes Codex skills into its project discovery layout", async () => {
@@ -306,10 +306,9 @@ test("a project may speak a vocabulary of its own", async () => {
   await mkdir(own, { recursive: true });
   await writeFile(join(own, "own.canon"),
     "language 0.1.0\nmodule own\n  means\n    A vocabulary of its own.\n");
-  await writeFile(manifest(root),
-    'stdlib = "../vocabulary"\npaths = ["spec"]\n');
+  await writeFile(manifest(root), 'paths = ["../vocabulary", "./spec"]\n');
 
-  const set = whole(read(manifest(root)));
+  const set = read(manifest(root)).paths;
 
   assert.deepEqual(set, [own, join(root, ".canon", "spec")]);
 });

@@ -7,7 +7,7 @@ import { test } from "node:test";
 
 import { Diagnostic, ERROR, WARNING } from "../src/errors.js";
 import { KEYWORDS, tokenize } from "../src/lexer.js";
-import { ManifestError, discover, read, whole } from "../src/manifest.js";
+import { ManifestError, discover, read } from "../src/manifest.js";
 import {
   Declaration, Entity, Enum, Module, Requirement, Value, address,
 } from "../src/nodes.js";
@@ -969,7 +969,7 @@ test("every declaration in the library has means", () => {
 
 test("the manifest names the paths of the set", () => {
   const root = temporary();
-  const path = manifest(root, 'paths = ["vocabulary", "spec"]\n');
+  const path = manifest(root, 'paths = ["./vocabulary", "./spec"]\n');
   const readManifest = read(path);
   assert.deepEqual(readManifest.paths, [
     join(root, ".canon", "vocabulary"), join(root, ".canon", "spec"),
@@ -978,7 +978,7 @@ test("the manifest names the paths of the set", () => {
 
 test("the manifest is found above the current directory", () => {
   const root = temporary();
-  manifest(root, 'paths = ["stdlib"]\n');
+  manifest(root, 'paths = ["./stdlib"]\n');
   const deep = join(root, "one", "two");
   mkdirSync(deep, { recursive: true });
   assert.deepEqual(discover(deep).paths, [join(root, ".canon", "stdlib")]);
@@ -986,70 +986,66 @@ test("the manifest is found above the current directory", () => {
 
 test("a manifest without paths is rejected", () => {
   const root = temporary();
-  const path = manifest(root, 'stdlib = "./vocabulary"\n');
+  const path = manifest(root, 'paths = []\n');
   assert.throws(() => read(path), /names no path/);
 });
 
-test("a manifest may name where the definition of the language lies", () => {
+test("paths given as anything but strings are rejected", () => {
   const root = temporary();
-  const path = manifest(root, 'paths = ["spec"]\ndocs = "./elsewhere/docs"\n');
+  const path = manifest(root, 'paths = [1]\n');
 
-  const readManifest = read(path);
-
-  assert.equal(readManifest.docs, join(root, ".canon", "elsewhere", "docs"));
+  assert.throws(() => read(path), /"paths" is a list of paths and package names/);
 });
 
-test("a manifest naming no definition says so by holding none", () => {
+test("a directory of the set carries nothing but its modules", () => {
   const root = temporary();
-  const path = manifest(root, 'paths = ["spec"]\n');
+  const path = manifest(root, 'paths = ["./spec"]\n');
 
-  assert.equal(read(path).docs, null);
+  const [source] = read(path).sources;
+
+  assert.equal(source.named, "./spec");
+  assert.equal(source.docs, null);
+  assert.equal(source.examples, null);
 });
 
-test("a definition given as a list is rejected", () => {
-  const root = temporary();
-  const path = manifest(root, 'paths = ["spec"]\ndocs = ["a", "b"]\n');
-
-  assert.throws(() => read(path), /"docs" names a package or a path/);
-});
-
-test("a vocabulary is named as a package and found where it was installed", () => {
+test("a package is named in the set and found where it was installed", () => {
   const root = temporary();
   const vocabulary = join(root, "node_modules", "@acme", "vocabulary");
   mkdirSync(vocabulary, { recursive: true });
   writeFileSync(join(vocabulary, "package.json"),
     '{ "name": "@acme/vocabulary", "version": "1.0.0" }');
-  const path = manifest(root, 'paths = ["spec"]\nstdlib = "@acme/vocabulary"\n');
+  const path = manifest(root, 'paths = ["@acme/vocabulary", "./spec"]\n');
 
   const readManifest = read(path);
 
   // No "canon" field: the package is the vocabulary, whole.
-  assert.equal(readManifest.stdlib, vocabulary);
-  assert.deepEqual(whole(readManifest), [vocabulary, join(root, ".canon", "spec")]);
+  assert.deepEqual(readManifest.paths, [vocabulary, join(root, ".canon", "spec")]);
 });
 
-test("a package says for itself where in it the vocabulary lies", () => {
+test("a package says for itself what it holds and where", () => {
   const root = temporary();
   const vocabulary = join(root, "node_modules", "@acme", "vocabulary");
   mkdirSync(vocabulary, { recursive: true });
   writeFileSync(join(vocabulary, "package.json"),
     '{ "name": "@acme/vocabulary", "version": "1.0.0",'
-    + ' "canon": { "stdlib": "modules", "docs": "prose" } }');
-  const path = manifest(root,
-    'paths = ["spec"]\nstdlib = "@acme/vocabulary"\ndocs = "@acme/vocabulary"\n');
+    + ' "canon": { "stdlib": "modules", "docs": "prose", "examples": "shown" } }');
+  const path = manifest(root, 'paths = ["@acme/vocabulary", "./spec"]\n');
 
-  const readManifest = read(path);
+  const [source] = read(path).sources;
 
-  assert.equal(readManifest.stdlib, join(vocabulary, "modules"));
-  assert.equal(readManifest.docs, join(vocabulary, "prose"));
+  // Named once: the modules, the definition of the language and the examples
+  // all come from the one name, because the package answers for all three.
+  assert.equal(source.path, join(vocabulary, "modules"));
+  assert.equal(source.docs, join(vocabulary, "prose"));
+  assert.equal(source.examples, join(vocabulary, "shown"));
 });
 
-test("a vocabulary that is not installed is reported by name", () => {
+test("a package that is not installed is reported by name", () => {
   const root = temporary();
-  const path = manifest(root, 'paths = ["spec"]\nstdlib = "@acme/nowhere"\n');
+  const path = manifest(root, 'paths = ["@acme/nowhere"]\n');
 
   assert.throws(() => read(path),
-    /"stdlib" names the package "@acme\/nowhere", and it is not installed/);
+    /"paths" names the package "@acme\/nowhere", and it is not installed/);
 });
 
 test("a missing manifest is reported", () => {

@@ -4,7 +4,7 @@ import { createServer } from "node:http";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { ManifestError, discover, load, resolve, whole } from "@canon/lang";
+import { ManifestError, discover, load, resolve } from "@canon/lang";
 
 import { build } from "./model.js";
 import type { WorldView } from "./model.js";
@@ -82,7 +82,7 @@ export function main(argv: string[]): number {
 
   let paths: string[];
   try {
-    paths = args.paths.length ? args.paths : whole(discover());
+    paths = args.paths.length ? args.paths : discover().paths;
   } catch (error) {
     if (!(error instanceof ManifestError)) throw error;
     console.log(error.message);

@@ -30,13 +30,15 @@
   "files": [
     "dist/src",
     "docs",
+    "examples",
     "stdlib",
     "README.md",
     "LICENSE"
   ],
   "canon": {
     "stdlib": "stdlib",
-    "docs": "docs"
+    "docs": "docs",
+    "examples": "examples"
   },
   "engines": {
     "node": ">=18"
