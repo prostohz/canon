@@ -12,7 +12,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/prostohz/canonspec.git",
-    "directory": "@canon/lang"
+    "directory": "lang"
   },
   "type": "module",
   "main": "./dist/src/index.js",
@@ -53,7 +53,7 @@
   "scripts": {
     "build": "tsc",
     "prepare": "tsc",
-    "prepack": "node -e \"require('fs').copyFileSync('../../LICENSE', 'LICENSE')\"",
+    "prepack": "node -e \"require('fs').copyFileSync('../LICENSE', 'LICENSE')\"",
     "test": "tsc && node --test dist/test/*.test.js",
     "check": "tsc && node dist/src/bin.js check"
   }

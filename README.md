@@ -4,10 +4,10 @@ A language for describing requirements, and its tools: a modular vocabulary
 of entities, the composition of records, and requirements in prose with
 references to the entities.
 
-    @canon/cli/     the npm package laying a set out and naming the rest
-    @canon/lang/    the language: its definition, its vocabulary, its tool
-    @canon/cli/studio/  the set in a browser, included in the CLI
-    @canon/cli/extension/  the editor extension, included in the CLI
+    cli/     the npm package laying a set out and naming the rest
+    lang/    the language: its definition, its vocabulary, its tool
+    cli/studio/  the set in a browser, included in the CLI
+    cli/extension/  the editor extension, included in the CLI
 
 ## What is formal and what is prose
 
@@ -93,8 +93,8 @@ A set may also be named on the command line, path by path, and then the
 manifest is not consulted at all.
 
 The definition of the language is in
-[`@canon/lang/docs/`](@canon/lang/docs/README.md); the commands, in
-[`@canon/cli/README.md`](@canon/cli/README.md). Working on canon itself —
+[`lang/docs/`](lang/docs/README.md); the commands, in
+[`cli/README.md`](cli/README.md). Working on canon itself —
 building the packages, changing the language — is
 [`CONTRIBUTING.md`](CONTRIBUTING.md).
 

@@ -117,7 +117,7 @@ publisher `canonspec` exists. The extension is not a separate npm package.
 
 ## Staying in step
 
-Two tests in [`@canon/lang/test`](../../lang/test/specs.test.ts) hold the
+Two tests in [`lang/test`](../../lang/test/specs.test.ts) hold the
 highlighting to the language, and both are deliberately mechanical: "the
 highlighting lists every keyword" — a word added to the lexer and not added
 here breaks the build; "the highlighting knows every form of an address" —

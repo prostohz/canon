@@ -17,7 +17,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/prostohz/canonspec.git",
-    "directory": "@canon/cli"
+    "directory": "cli"
   },
   "type": "module",
   "bin": {
@@ -43,7 +43,7 @@
   "scripts": {
     "build": "tsc && node scripts/prose.mjs",
     "prepare": "npm run build",
-    "prepack": "node -e \"require('fs').copyFileSync('../../LICENSE', 'LICENSE')\"",
+    "prepack": "node -e \"require('fs').copyFileSync('../LICENSE', 'LICENSE')\"",
     "install:local": "npm install --no-save ../lang",
     "test": "npm run build && node --test dist/test/*.test.js"
   }

@@ -6,7 +6,7 @@ from. A vocabulary of a particular technology declares its entities as
 specialisations of the ones here and is not added to this directory:
 Kubernetes or Kafka will be replaced, `runtime:process` and
 `network:endpoint` will remain. Examples of such a vocabulary are kept in
-the repository of the language, in `@canon/lang/examples`.
+the repository of the language, in `lang/examples`.
 
 The directory holds no special position: the name `stdlib` is a convention,
 not a place the tool knows about. A module is named after its file and is

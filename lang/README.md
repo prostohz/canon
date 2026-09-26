@@ -96,7 +96,7 @@ been asked for is out of scope.
 every check of the resolver, and the manifest. Separately it checks that the
 list of keywords is the same in three places: the lexer,
 [`docs/grammar.ebnf`](docs/grammar.ebnf) and the highlighting grammar in
-[`@canon/cli/extension/`](../cli/extension/README.md). A word added in one place and forgotten
+[`cli/extension/`](../cli/extension/README.md). A word added in one place and forgotten
 in another breaks the build.
 
 `test/profile/toolkit.canon` — a small profile on top of the vocabulary;

@@ -57,7 +57,7 @@ or external dependencies.
 - [`test/studio.test.ts`](../test/studio.test.ts) — what the model puts
   together.
 
-From `@canon/cli`: `npm run install:local && npm test`.
+From `cli/`: `npm run install:local && npm test`.
 
 ## Licence
 

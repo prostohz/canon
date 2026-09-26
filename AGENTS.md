@@ -53,17 +53,17 @@ It follows that:
 
 The canon language is defined, implemented and covered by tests; the
 vocabulary is written in it. There are no actions, invariants or time in
-the language — a deliberate bound, see `@canon/lang/docs/language.md`.
+the language — a deliberate bound, see `lang/docs/language.md`.
 
-    @canon/cli/     the npm package laying a set out and naming the rest
-    @canon/lang/    the language: its definition, its vocabulary, its tool
-    @canon/cli/studio/  the set in a browser
-    @canon/cli/extension/  the editor extension
+    cli/     the npm package laying a set out and naming the rest
+    lang/    the language: its definition, its vocabulary, its tool
+    cli/studio/  the set in a browser
+    cli/extension/  the editor extension
 
 Everything executable is TypeScript on Node, except the extension, which is
 plain JavaScript with no build step. Two npm packages, each installed on
 its own — `@canonspec/cli` depends on `@canonspec/lang` and includes Studio
-and the extension. Their source directories live under `@canon/`. There is
+and the extension. Their source directories are `cli/` and `lang/`. There is
 no workspace root and no Python.
 
 Two packages are prepared for npm: `@canonspec/lang` (the definition, the standard
@@ -79,12 +79,13 @@ against `VERSION` in `src/version.ts` and moved only when the grammar
 moves. Adding a word to the library is a release; it is not a change of
 format, and no specification anywhere rewrites its first line for it.
 
-The repository uses `@canon/` for source directories and `@canonspec` for npm
-package names. The scoped packages say `publishConfig.access` outright: a
+The repository uses `cli/` and `lang/` for source directories and
+`@canonspec` for npm package names. The scoped packages say
+`publishConfig.access` outright: a
 scoped package is restricted unless it says otherwise, and a restricted one
 is not free.
 
-The extension has its own manifest at `@canon/cli/extension/package.json`
+The extension has its own manifest at `cli/extension/package.json`
 for a future VSIX or Marketplace release. Its identifier is
 `canonspec.canonspec-vscode`; it is not a separate npm package.
 
@@ -98,7 +99,7 @@ beside the project's own directories — never a path to it. The package
 answers for what it holds: its `canon` field says where in it the modules,
 the definition and the examples lie, so the set names it once and the tool
 prints where each resolved. A project may name its own package instead and
-speak its own vocabulary; `@canon/cli/README.md` has the shape of the
+speak its own vocabulary; `cli/README.md` has the shape of the
 manifest and the rules of resolution, `src/manifest.ts` implements them.
 In a project initialized by the CLI, `.canon/canon.toml` names `@canonspec/lang`.
 
@@ -109,7 +110,7 @@ installs into itself, where the lock file holds it.
 
 ## The specification language
 
-The language is defined in `@canon/lang/docs/` and is not retold here:
+The language is defined in `lang/docs/` and is not retold here:
 
 - `README.md` — the idea and the relation to earlier versions;
 - `language.md` — every construct and what stays prose;
@@ -126,8 +127,8 @@ check in the resolver, or with a note that it is not checked.
 
 The modules of the library set the entities the specifications operate on.
 The index of the modules and the rules a definition follows are in
-`@canon/lang/stdlib/README.md`, and are not repeated here; how it is
-written down is in `@canon/lang/docs/language.md`.
+`lang/stdlib/README.md`, and are not repeated here; how it is
+written down is in `lang/docs/language.md`.
 
 The one thing to hold on to while changing it: the library is a vocabulary
 and holds no requirements.
@@ -138,7 +139,7 @@ Building, testing, checking the library and publishing are in
 `CONTRIBUTING.md`, and are not repeated here.
 
 The tool checks the structure and the resolvability of names; it proves
-nothing. Sources in `@canon/lang/src`, tests in `@canon/lang/test`; what
+nothing. Sources in `lang/src`, tests in `lang/test`; what
 the package offers to other packages is listed in `src/index.ts`.
 
 `@canonspec/cli` carries `init`, `check`, `studio`, `vscode` and `version`, each
