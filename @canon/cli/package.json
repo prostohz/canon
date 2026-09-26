@@ -12,11 +12,11 @@
     "access": "public"
   },
   "license": "MIT",
-  "homepage": "https://github.com/prostohz/canon",
-  "bugs": "https://github.com/prostohz/canon/issues",
+  "homepage": "https://github.com/prostohz/canonspec",
+  "bugs": "https://github.com/prostohz/canonspec/issues",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/prostohz/canon.git",
+    "url": "git+https://github.com/prostohz/canonspec.git",
     "directory": "@canon/cli"
   },
   "type": "module",

@@ -1,4 +1,4 @@
-# canon
+# Canon Spec
 
 A language for describing requirements, and its tools: a modular vocabulary
 of entities, the composition of records, and requirements in prose with
