@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { World, parse, resolve } from "@canon/lang";
+import { World, parse, resolve } from "@canonspec/lang";
 
-import { build } from "../src/model.js";
+import { build } from "../src/studio/model.js";
 
 const HEADER = "language 0.1.0\nmodule probe\n";
 

@@ -27,7 +27,7 @@ check reads the set and reports on it. With no paths named it takes them
 from .canon/canon.toml — the manifest init writes. --strict treats warnings as
 errors.
 
-studio opens the set in a browser, through @canon/studio: the vocabulary,
+studio opens the set in a browser: the vocabulary,
 the composition of entities together with what they inherit, requirements
 with their references and links, and the diagnostics.
 
@@ -161,8 +161,6 @@ async function navigateHarnesses(
 
 async function askHarnesses(root: string): Promise<string[] | null> {
   const detected = await detectHarnesses(root);
-  // A piped or automated init must never wait for input. Use an unambiguous
-  // detected layout; otherwise the caller has to choose one explicitly.
   if (!INTERACTIVE) {
     if (detected.length === 1) return detected;
     if (!detected.length) {
@@ -230,9 +228,7 @@ if (command === "init") {
     exit(error instanceof InitUsageError ? 2 : 1);
   }
 } else if (command === "check") {
-  // Loaded only when asked for: checking drags in the language, and an init
-  // has no use for it.
-  const { ManifestError, UsageError, check, parseArguments } = await import("@canon/lang");
+  const { ManifestError, UsageError, check, parseArguments } = await import("@canonspec/lang");
   try {
     exit(check(parseArguments(rest)));
   } catch (error) {
@@ -263,12 +259,7 @@ if (command === "init") {
     exit(1);
   }
 } else if (command === "studio") {
-  // The page and everything behind it are another package: this command is
-  // the name it is reached by here, and nothing of it lives in this one.
-  //
-  // Serving outlives this line: the code goes into process.exitCode, not
-  // into exit(), or the server would be shut down as it starts listening.
-  const { main } = await import("@canon/studio");
+  const { main } = await import("./studio/server.js");
   process.exitCode = main(rest);
 } else if (command === undefined || command === "-h" || command === "--help") {
   console.log(USAGE);

@@ -1,7 +1,7 @@
 {
-  "name": "@canon/lang",
-  "version": "0.1.0",
-  "description": "The canon language: its definition, and the tool parsing and checking specifications written in it",
+  "name": "@canonspec/lang",
+  "version": "0.1.1",
+  "description": "The Canon language: its definition, and the tool parsing and checking specifications written in it",
   "publishConfig": {
     "access": "public"
   },

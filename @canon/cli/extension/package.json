@@ -1,9 +1,10 @@
 {
-  "name": "canon-vscode",
+  "name": "canonspec-vscode",
+  "private": true,
   "displayName": "Canon",
-  "description": "Highlighting, navigation and hints for the canon specification language",
-  "version": "0.1.0",
-  "publisher": "canon",
+  "description": "Highlighting, navigation and hints for the Canon language",
+  "version": "0.1.1",
+  "publisher": "canonspec",
   "license": "MIT",
   "keywords": ["canon", "specification", "requirements"],
   "homepage": "https://github.com/prostohz/canon",
@@ -11,17 +12,16 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/prostohz/canon.git",
-    "directory": "@canon/vscode"
+    "directory": "@canon/cli/extension"
   },
   "files": [
-    "extension.js",
     "canon.js",
+    "extension.js",
     "language-configuration.json",
-    "syntaxes"
+    "syntaxes",
+    "README.md",
+    "LICENSE"
   ],
-  "scripts": {
-    "prepack": "node -e \"require('fs').copyFileSync('../../LICENSE', 'LICENSE')\""
-  },
   "engines": {
     "vscode": "^1.75.0"
   },

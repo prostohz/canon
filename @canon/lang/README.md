@@ -32,7 +32,7 @@ beside the tool.
     npm run check -- stdlib ../../../specs
 
 The command itself is `canon`; the package declares it as its `bin`, so a
-project that depends on `@canon/lang` calls it as `npx canon check`.
+project that depends on `@canonspec/lang` calls it as `npx canon check`.
 
 `--strict` treats warnings as errors.
 
@@ -66,7 +66,7 @@ specifications.
 
 ## Structure
 
-TypeScript, compiled by `tsc` into `dist/`; the package is `@canon/lang` and
+TypeScript, compiled by `tsc` into `dist/`; the package is `@canonspec/lang` and
 its command is `canon`.
 
 - `src/lexer.ts` — tokens and indentation; a block of free text is read
@@ -78,7 +78,7 @@ its command is `canon`.
 - `src/resolver.ts` — every check from the list above;
 - `src/cli.ts` — the report and the summary; `src/bin.ts` runs it;
 - `src/index.ts` — what the package offers to whoever reads a set: the
-  check itself among the rest, so that `@canon/cli` may carry the same
+  check itself among the rest, so that `@canonspec/cli` may carry the same
   command without repeating it.
 
 ## What is not here
@@ -96,7 +96,7 @@ been asked for is out of scope.
 every check of the resolver, and the manifest. Separately it checks that the
 list of keywords is the same in three places: the lexer,
 [`docs/grammar.ebnf`](docs/grammar.ebnf) and the highlighting grammar in
-[`@canon/vscode/`](../vscode/README.md). A word added in one place and forgotten
+[`@canon/cli/extension/`](../cli/extension/README.md). A word added in one place and forgotten
 in another breaks the build.
 
 `test/profile/toolkit.canon` — a small profile on top of the vocabulary;

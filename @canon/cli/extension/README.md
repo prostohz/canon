@@ -1,6 +1,6 @@
 # The VS Code extension
 
-Highlighting, navigation and hints for the [`.canon`](../lang/docs/README.md)
+Highlighting, navigation and hints for the [`.canon`](../../lang/docs/README.md)
 format.
 
 ## What it does
@@ -78,29 +78,30 @@ implementation.
 
 ## Installing
 
-The directory is a ready extension with no build step, and it is also the
-npm package `canon-vscode`, which `@canon/cli` depends on and lays out:
+This directory is a ready extension with no build step. It is included in
+`@canonspec/cli`, which lays it out with:
 
     canon-cli vscode
 
-It writes `canon.canon-vscode-<version>` into `~/.vscode/extensions`,
+It writes `canonspec.canonspec-vscode-<version>` into `~/.vscode/extensions`,
 removing whatever version was there. `--dir` names another extensions
 directory, for the editors of the same family; `--link` puts a symlink to
-the package instead of a copy — that is the way to work on the extension
+this directory instead of a copy — that is the way to work on the extension
 itself, since an edit is then seen without a second install.
 
 Restart the editor afterwards: the directory is scanned at start-up. A file
-is recognised by the `.canon` extension and by the first line
-`module <name>`.
+is recognised by the `.canon` extension and by a first line such as
+`language 0.1.0`.
 
-The two names it goes under are one: `name` is what npm publishes it as and
-what VS Code takes for the second half of the identifier
-`canon.canon-vscode`; `displayName` is what is shown.
+The VS Code identifier is `canonspec.canonspec-vscode`:
+`publisher.name` in `package.json`. `displayName` is Canon.
 
-That is why this is the one package of the four with no scope, though its
-directory sits under `@canon` with the others: an identifier holds no `/`,
-and neither does the directory an editor is given to scan. `@canon/vscode`
-would be a name for npm alone, and there is only one `name` here to give.
+To build a VSIX, run from this directory:
+
+    npx @vscode/vsce package --no-dependencies
+
+The same manifest can be published to the VS Code Marketplace once the
+publisher `canonspec` exists. The extension is not a separate npm package.
 
 ## Contents
 
@@ -116,7 +117,7 @@ would be a name for npm alone, and there is only one `name` here to give.
 
 ## Staying in step
 
-Two tests in [`@canon/lang/test`](../lang/test/specs.test.ts) hold the
+Two tests in [`@canon/lang/test`](../../lang/test/specs.test.ts) hold the
 highlighting to the language, and both are deliberately mechanical: "the
 highlighting lists every keyword" — a word added to the lexer and not added
 here breaks the build; "the highlighting knows every form of an address" —

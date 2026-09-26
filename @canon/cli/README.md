@@ -1,10 +1,10 @@
-# @canon/cli
+# @canonspec/cli
 
 Names a canon set in a project and lays out the Canon workflow for the local
 AI harness that will write and implement its specifications. Then checks the
 set, shows it, and lays out the extension the editor reads it with.
 
-    npm install -g @canon/cli
+    npm install -g @canonspec/cli
 
     canon-cli init
     canon-cli check
@@ -49,7 +49,7 @@ Nothing of the language is copied in — the manifest names it, and names
 nothing else:
 
     paths = [
-        "@canon/lang",
+        "@canonspec/lang",
         "./spec",
     ]
 
@@ -83,14 +83,14 @@ Another entry of the same list:
         "./spec",
     ]
 
-Nothing in the tool prefers `@canon/lang` — an init writes that name because
+Nothing in the tool prefers `@canonspec/lang` — an init writes that name because
 it is the one that comes with it.
 
 ## Updating
 
 By updating the package:
 
-    npm update -g @canon/lang
+    npm update -g @canonspec/lang
 
 There is no copy to refresh and nothing to fall out of step. Installed into
 the project instead of globally, the lock file of the project records which
@@ -115,7 +115,7 @@ With no paths named the set is taken from the manifest `init` wrote.
 `--strict` treats warnings as errors. The exit code is 1 when there are
 errors, 2 on a usage or manifest error.
 
-The checking itself is not this package's — it is `@canon/lang`, which
+The checking itself is not this package's — it is `@canonspec/lang`, which
 carries the same command as `canon check` — and it is loaded only when
 `check` is asked for.
 
@@ -124,27 +124,22 @@ carries the same command as `canon check` — and it is loaded only when
     canon-cli studio [paths...] [--port <number>] [--no-browser]
 
 Opens the set in a browser at `http://127.0.0.1:8765/`, with the paths taken
-from the same manifest. What is shown is [`@canon/studio`](../studio/README.md)
-and nothing of it lives here: this command is the name the studio is reached
-by from the tool that lays a set out, and the package is loaded only when it
-is asked for.
-
-The same page is opened by `canon-studio` on its own, for a project that
-wants the studio and not the rest.
+from the same manifest. The [Studio](studio/README.md) lives in this package
+and is loaded only when asked for.
 
 ## The editor extension
 
     canon-cli vscode [--link] [--dir <directory>]
 
-Lays `canon-vscode` — highlighting, navigation and hints — out as
-`canon.canon-vscode-<version>` in `~/.vscode/extensions`, removing whatever
+Lays the bundled extension — highlighting, navigation and hints — out as
+`canonspec.canonspec-vscode-<version>` in `~/.vscode/extensions`, removing whatever
 version was there. The editor scans that directory at start-up and takes
 every folder holding a `package.json` for an extension, so nothing is asked
 of the marketplace and nothing of a `code` command on the path; a restart
 is.
 
 `--dir` names another extensions directory, for the editors of the same
-family. `--link` puts a symlink to the package instead of a copy: an edit
+family. `--link` puts a symlink to the bundled source instead of a copy: an edit
 of the extension is then seen without a second install.
 
 ## What it does not do
@@ -153,9 +148,9 @@ It does not judge the requirements — nothing here does yet. The check is
 structural: the resolvability of names, and nothing beyond it. It reads no
 source code, and says nothing about whether two requirements agree.
 
-**It holds no rules of its own at all.** Checking is `@canon/lang`, the
-studio is `@canon/studio`, the extension is `canon-vscode`; what is here is
-the layout of a set in a project and the names those three are reached by.
+**It holds no rules of its own at all.** Checking is `@canonspec/lang`; Studio
+and the extension are bundled here. The CLI lays out a set in a project and
+provides the names those tools are reached by.
 
 ## Contents
 
@@ -172,27 +167,29 @@ The sources are TypeScript, compiled by `tsc` into `dist/`.
   adapter per local AI harness;
 - [`src/editor.ts`](src/editor.ts) — the extension into the directory an
   editor scans;
+- [`extension/`](extension/README.md) — the VS Code extension, also ready for
+  separate VSIX and Marketplace publication;
+- [`src/studio/`](src/studio/server.ts) and [`studio/`](studio/README.md) — the
+  Studio server, model and browser page;
 - [`src/version.ts`](src/version.ts) — what is installed beside this
   package, and the version of the format it understands;
 - [`test/`](test) — `node --test` over the compiled tests: the layout and
   the commands in `init.test.ts`, the extension in `editor.test.ts`, what
   is installed in `version.test.ts`.
 
-`@canon/lang` is a dependency because a project's set is named against it
-and because `check` is its work; `@canon/studio` because `studio` is; and
-`canon-vscode` because the extension has to come from somewhere. None is
-copied out of: `init` names the language where it lies, and only `vscode`
-copies, into the editor.
+`@canonspec/lang` is a dependency because a project's set is named against it
+and because `check` and Studio use it. Studio and the extension live in this
+package. `init` copies neither into the project; only `vscode` copies the
+extension into the editor.
 
-    npm install     # once the three are published
+    npm install
     npm test        # builds and runs the tests
     npm run build   # builds only
 
-In a checkout of the repository they are not on the registry yet, and the
-versions named here do not resolve; take them from beside this package
-instead:
+To test changes to the packages beside this one instead of their published
+versions:
 
-    npm run install:local   # npm install --no-save ../lang ../vscode ../studio
+    npm run install:local   # npm install --no-save ../lang
 
 `dist/` and `LICENSE` here are generated and not kept in the repository.
 
@@ -200,5 +197,5 @@ instead:
 
 MIT, the licence of the repository this package is built from. It covers
 the tool; the standard library and the definition of the language come
-under the licence of `@canon/lang`, where they stay, and the specifications
+under the licence of `@canonspec/lang`, where they stay, and the specifications
 a project writes in `.canon/spec` are its own.

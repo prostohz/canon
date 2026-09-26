@@ -9,34 +9,26 @@ for that.
     @canon/lang/    the definition of the language, the standard library
                     in stdlib/, and the tool: `canon`
     @canon/cli/     init, check, studio, vscode, version: `canon-cli`
-    @canon/studio/  the set in a browser: `canon-studio`
-    @canon/vscode/  the editor extension, plain JavaScript, no build
+    @canon/cli/studio/  the set in a browser: `canon-cli studio`
+    @canon/cli/extension/  the editor extension, plain JavaScript, no build
 
-Each installs on its own — there is no workspace root. `@canon/cli` depends
-on the language, the studio and the extension; `@canon/studio` on the
-language alone.
+Each npm package installs on its own — there is no workspace root.
+`@canonspec/cli` depends on the language and includes Studio and the extension.
 
 ## Building and testing
 
     cd @canon/lang && npm install && npm test
-    cd @canon/vscode                              # nothing to build
 
 A package that depends on another names its version, not its path, because
 npm publishes a `file:` dependency exactly as it is written and a published
 package would then point at a directory on the machine that published it.
-Until the dependencies are on the registry those versions do not resolve;
-take them from beside the package instead, deepest first:
+To test changes to the packages beside it instead of published versions:
 
-    cd @canon/studio
+    cd @canon/cli
     npm run install:local     # npm install --no-save ../lang
     npm test
 
-    cd @canon/cli
-    npm run install:local     # npm install --no-save ../lang ../vscode ../studio
-    npm test
-
-For the same reason neither carries a lock file yet. Write one with an
-ordinary `npm install` once their dependencies are published.
+An ordinary `npm install` uses published dependencies once they exist.
 
 What `canon-cli init` writes into a project — the workflow, the roles and the
 skills — is Markdown in `@canon/cli/src/workflow`, not text inside a module.
@@ -53,7 +45,7 @@ The standard library is checked like any other set, by naming its path:
     npm run check -- stdlib examples
 
 From the root, the repository checks itself through its own manifest, which
-names `@canon/lang` — the tool resolving the package this repository holds:
+names `@canonspec/lang` — the tool resolving the package this repository holds:
 
     node @canon/cli/dist/src/cli.js check
 
@@ -61,8 +53,8 @@ names `@canon/lang` — the tool resolving the package this repository holds:
 
     cd @canon/cli && npm link       # a global canon-cli, live on the sources
 
-Then `canon-cli init` in a project, or `npm link @canon/cli` inside one to
-call it as `npx @canon/cli init`. Undo with `npm rm -g @canon/cli`.
+Then `canon-cli init` in a project, or `npm link @canonspec/cli` inside one to
+call it as `npx @canonspec/cli init`. Undo with `npm rm -g @canonspec/cli`.
 
 ## Changing the language
 
@@ -77,7 +69,7 @@ admissible order of tokens, and the prose of
 - a new construct is accepted only together with a check in the resolver,
   or with a note that it is not checked;
 - a change comes with a test;
-- the highlighting in `@canon/vscode/` repeats the list of keywords, and a
+- the highlighting in `@canon/cli/extension/` repeats the list of keywords, and a
   test holds the two together: a word added to the lexer and forgotten
   there breaks the build.
 
@@ -90,20 +82,20 @@ does. The version of the package moves whenever anything ships.
 The rules a definition follows are in
 [`@canon/lang/stdlib/README.md`](@canon/lang/stdlib/README.md). The library
 is a vocabulary: it declares entities and holds no requirements. Adding a
-module is a release of `@canon/lang`, not a change of the format.
+module is a release of `@canonspec/lang`, not a change of the format.
 
 ## Publishing
 
-`@canon/lang` and `canon-vscode` first, `@canon/cli` after them: it names
-their versions and cannot resolve them until they are there.
+Publish `@canonspec/lang` first, then `@canonspec/cli`: it names the language
+version and cannot resolve it until it is there. Studio and the extension are
+delivered in the CLI archive. The extension can be
+packaged separately as a VSIX from `@canon/cli/extension/`.
 
 The scoped packages say `publishConfig.access` in their manifests — npm
 publishes a scoped package as restricted otherwise, and a restricted one
-needs a paid plan. `canon-vscode` is unscoped and public by default; the
-`prepack` of each package copies the licence from the root of the
-repository beside it.
+needs a paid plan. The `prepack` of each npm package copies the licence from
+the root of the repository beside it.
 
 ## The language of the project
 
-English: the specifications, the documentation, the messages of the tools
-and the comments in the code.
+English: the specifications, the documentation and the messages of the tools.

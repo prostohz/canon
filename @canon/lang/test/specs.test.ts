@@ -23,7 +23,7 @@ const EXAMPLES = join(PACKAGE, "examples");
 const PROFILE = join(PACKAGE, "test", "profile");
 const GRAMMAR = join(PACKAGE, "docs", "grammar.ebnf");
 const LANGUAGE = join(PACKAGE, "docs", "language.md");
-const TMLANGUAGE = join(ROOT, "vscode", "syntaxes", "canon.tmLanguage.json");
+const TMLANGUAGE = join(ROOT, "cli", "extension", "syntaxes", "canon.tmLanguage.json");
 
 const HEADER = "language 0.1.0\nmodule probe\n";
 

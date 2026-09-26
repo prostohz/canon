@@ -6,7 +6,7 @@ any delivery — nothing is checked against what stands here.
 
 They do go out with the package, and a project reaches them without naming
 them: `package.json` says `"canon": { "examples": "examples" }`, so a set
-holding `@canon/lang` holds the way here too, and `canon-cli check` prints
+holding `@canonspec/lang` holds the way here too, and `canon-cli check` prints
 it. What is read from them is the shape a module takes — never vocabulary,
 which the standard library carries, and never requirements, which belong to
 the project reading them.

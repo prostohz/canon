@@ -57,19 +57,20 @@ the language — a deliberate bound, see `@canon/lang/docs/language.md`.
 
     @canon/cli/     the npm package laying a set out and naming the rest
     @canon/lang/    the language: its definition, its vocabulary, its tool
-    @canon/studio/  the set in a browser
-    @canon/vscode/  the editor extension
+    @canon/cli/studio/  the set in a browser
+    @canon/cli/extension/  the editor extension
 
 Everything executable is TypeScript on Node, except the extension, which is
-plain JavaScript with no build step. Four npm packages, each installed on
-its own — `@canon/studio/` depends on `@canon/lang/`, and `@canon/cli/`
-depends on the language, the studio and `@canon/vscode/`. There is no
-workspace root and no Python.
+plain JavaScript with no build step. Two npm packages, each installed on
+its own — `@canonspec/cli` depends on `@canonspec/lang` and includes Studio
+and the extension. Their source directories live under `@canon/`. There is
+no workspace root and no Python.
 
-All four are published: `@canon/lang` (the definition, the standard
-library in `stdlib/`, and the tool as the `canon` command), `canon-vscode`
-(the extension), `@canon/studio` (`canon-studio`) and `@canon/cli` (`init`,
-`check`, `studio` and `vscode`).
+Two packages are prepared for npm: `@canonspec/lang` (the definition, the standard
+library in `stdlib/`, and the tool as the `canon` command) and `@canonspec/cli`
+(`init`, `check`, `studio`, `vscode` and the extension).
+Their previous `0.1.0` versions were unpublished;
+the next release must use a new version.
 
 The library goes out inside the language and under its version: one
 delivery, nothing to keep in step by hand. That version is not the version
@@ -78,31 +79,28 @@ against `VERSION` in `src/version.ts` and moved only when the grammar
 moves. Adding a word to the library is a release; it is not a change of
 format, and no specification anywhere rewrites its first line for it.
 
-A directory under `@canon` is named after the package without the scope,
-and the scoped packages say `publishConfig.access` outright: a scoped package is
-restricted unless it says otherwise, and a restricted one is not free.
+The repository uses `@canon/` for source directories and `@canonspec` for npm
+package names. The scoped packages say `publishConfig.access` outright: a
+scoped package is restricted unless it says otherwise, and a restricted one
+is not free.
 
-`canon-vscode` alone is unscoped, and cannot be otherwise: its one manifest
-serves npm and the editor at once, and an editor identifier holds no `/`.
-Its directory is `@canon/vscode` like the rest, so the package name and the
-directory name differ there and nowhere else — `@canon/vscode/README.md`
-says why.
+The extension has its own manifest at `@canon/cli/extension/package.json`
+for a future VSIX or Marketplace release. Its identifier is
+`canonspec.canonspec-vscode`; it is not a separate npm package.
 
-Because npm publishes `file:` dependencies as they are written, `@canon/cli`
-names the versions of the other two, not their paths, and takes them from
+Because npm publishes `file:` dependencies as they are written, `@canonspec/cli`
+names the version of the language, not its path, and takes it from
 beside itself in a checkout — `npm run install:local`.
 
 **Nothing of the language is copied into a project.** An init writes
-`.canon/spec` and a manifest whose one list names the package `@canon/lang`
+`.canon/spec` and a manifest whose one list names the package `@canonspec/lang`
 beside the project's own directories — never a path to it. The package
 answers for what it holds: its `canon` field says where in it the modules,
 the definition and the examples lie, so the set names it once and the tool
 prints where each resolved. A project may name its own package instead and
 speak its own vocabulary; `@canon/cli/README.md` has the shape of the
 manifest and the rules of resolution, `src/manifest.ts` implements them.
-What follows for this repository: `.canon/canon.toml` names `@canon/lang`,
-which resolves to the package the repository holds, the tool resolving
-itself.
+In a project initialized by the CLI, `.canon/canon.toml` names `@canonspec/lang`.
 
 The price of it, taken knowingly: a specification cannot be resolved
 without the package declaring its vocabulary, and a global install records
@@ -143,19 +141,19 @@ The tool checks the structure and the resolvability of names; it proves
 nothing. Sources in `@canon/lang/src`, tests in `@canon/lang/test`; what
 the package offers to other packages is listed in `src/index.ts`.
 
-`@canon/cli` carries `init`, `check`, `studio`, `vscode` and `version`, each
+`@canonspec/cli` carries `init`, `check`, `studio`, `vscode` and `version`, each
 described in its README and loaded only when asked for, so that `init` pays
 for none of the rest. Two rules hold across it: it writes no copy of
 anything but the extension, and that into the editor, not the project; and
 it names packages rather than resolving them into paths, so that what it
 writes down travels to another machine. It holds no rules of its own at all
-— checking is the language, the studio is `@canon/studio`, the extension is
-`canon-vscode`, and what is here is the layout of a set in a project and the
-names those three are reached by.
+— checking is the language, Studio and the extension are bundled with the CLI,
+and what is here is the layout of a set in a project and the names those tools
+are reached by.
 
-`@canon/studio` is the set in a browser, served at `/` with one address
+Studio is the set in a browser, served at `/` with one address
 behind it, `/api/world`, re-read from the files on every request. It holds
-no rules either: it parses through `@canon/lang` and only arranges what
+no rules either: it parses through `@canonspec/lang` and only arranges what
 comes back — the chain of supertypes walked so that inherited parts show
 beside the own ones, the back references collected, the diagnostics laid out
 by module. Nothing of it is stored.

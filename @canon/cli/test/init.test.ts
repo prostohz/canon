@@ -6,7 +6,7 @@ import { dirname, join } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
-import { read } from "@canon/lang";
+import { read } from "@canonspec/lang";
 
 import { detectHarnesses } from "../src/harness/index.js";
 import { init } from "../src/init.js";
@@ -52,7 +52,7 @@ test("init names the language as a package, not as a place", async () => {
 
   const content = await readFile(manifest(root), "utf8");
   assert.match(content, /"\.\/spec"/);
-  assert.equal(named(content, /"(@canon\/lang)"/), "@canon/lang");
+  assert.equal(named(content, /"(@canonspec\/lang)"/), "@canonspec/lang");
 
   // Nothing of the machine it was run on: the manifest travels with the
   // project, and the package is found wherever the next machine put it.
@@ -104,7 +104,7 @@ test("force replaces the manifest", async () => {
   await init({ root, force: true });
 
   assert.match(await readFile(manifest(root), "utf8"),
-    /paths = \[\n    "@canon\/lang",\n    "\.\/spec"/);
+    /paths = \[\n    "@canonspec\/lang",\n    "\.\/spec"/);
 });
 
 test("init writes Codex skills into its project discovery layout", async () => {

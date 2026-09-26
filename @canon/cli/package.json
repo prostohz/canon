@@ -1,7 +1,7 @@
 {
-  "name": "@canon/cli",
-  "version": "0.1.0",
-  "description": "Lay out a canon set in a project: the definition of the language, the standard library and the manifest naming them",
+  "name": "@canonspec/cli",
+  "version": "0.1.1",
+  "description": "Lay out a Canon set in a project: the definition of the language, the standard library and the manifest naming them",
   "keywords": [
     "canon",
     "specification",
@@ -25,6 +25,8 @@
   },
   "files": [
     "dist/src",
+    "extension",
+    "studio",
     "README.md",
     "LICENSE"
   ],
@@ -32,9 +34,7 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@canon/lang": "^0.1.0",
-    "@canon/studio": "^0.1.0",
-    "canon-vscode": "^0.1.0"
+    "@canonspec/lang": "^0.1.1"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
@@ -44,7 +44,7 @@
     "build": "tsc && node scripts/prose.mjs",
     "prepare": "npm run build",
     "prepack": "node -e \"require('fs').copyFileSync('../../LICENSE', 'LICENSE')\"",
-    "install:local": "npm install --no-save ../lang ../vscode ../studio",
+    "install:local": "npm install --no-save ../lang",
     "test": "npm run build && node --test dist/test/*.test.js"
   }
 }

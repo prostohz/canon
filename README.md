@@ -6,8 +6,8 @@ references to the entities.
 
     @canon/cli/     the npm package laying a set out and naming the rest
     @canon/lang/    the language: its definition, its vocabulary, its tool
-    @canon/studio/  the set in a browser
-    @canon/vscode/  the editor extension
+    @canon/cli/studio/  the set in a browser, included in the CLI
+    @canon/cli/extension/  the editor extension, included in the CLI
 
 ## What is formal and what is prose
 
@@ -61,7 +61,7 @@ it does not decide the architecture of an implementation.
 
 In a project of your own, in whatever language it is written:
 
-    npm install -g @canon/cli
+    npm install -g @canonspec/cli
 
     canon-cli init
     canon-cli check
@@ -70,7 +70,7 @@ In a project of your own, in whatever language it is written:
 `.canon/canon.toml`, the manifest naming the set:
 
     paths = [
-        "@canon/lang",
+        "@canonspec/lang",
         "./spec",
     ]
 

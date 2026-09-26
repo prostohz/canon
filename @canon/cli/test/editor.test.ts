@@ -6,7 +6,7 @@ import { test } from "node:test";
 
 import { editor } from "../src/editor.js";
 
-const NAME = "canon.canon-vscode-0.1.0";
+const NAME = "canonspec.canonspec-vscode-0.1.1";
 
 async function extensions(): Promise<string> {
   return await mkdtemp(join(tmpdir(), "canon-extensions-"));
@@ -21,8 +21,8 @@ test("the extension is laid out under publisher, name and version", async () => 
   const manifest = JSON.parse(
     await readFile(join(directory, NAME, "package.json"), "utf8"),
   );
-  assert.equal(manifest.name, "canon-vscode");
-  assert.equal(manifest.publisher, "canon");
+  assert.equal(manifest.name, "canonspec-vscode");
+  assert.equal(manifest.publisher, "canonspec");
   assert.equal(manifest.contributes.languages[0].id, "canon");
   await readFile(join(directory, NAME, "syntaxes", "canon.tmLanguage.json"), "utf8");
 });
@@ -43,12 +43,15 @@ test("an install replaces whatever version was there", async () => {
   const directory = await extensions();
   await mkdir(join(directory, "canon.canon-vscode-0.0.9"), { recursive: true });
   await writeFile(join(directory, "canon.canon-vscode-0.0.9", "package.json"), "{}");
+  await mkdir(join(directory, "canonspec.canonspec-vscode-0.1.0"), { recursive: true });
+  await writeFile(join(directory, "canonspec.canonspec-vscode-0.1.0", "package.json"), "{}");
   await mkdir(join(directory, "someone.else-1.0.0"), { recursive: true });
 
   const done = await editor({ directory });
 
   assert.deepEqual((await readdir(directory)).sort(), [NAME, "someone.else-1.0.0"]);
   assert.ok(done.some((line) => line.startsWith("removed   canon.canon-vscode-0.0.9")));
+  assert.ok(done.some((line) => line.startsWith("removed   canonspec.canonspec-vscode-0.1.0")));
 });
 
 test("link puts a symlink instead of a copy", async () => {
@@ -60,7 +63,7 @@ test("link puts a symlink instead of a copy", async () => {
   const manifest = JSON.parse(
     await readFile(join(directory, NAME, "package.json"), "utf8"),
   );
-  assert.equal(manifest.name, "canon-vscode");
+  assert.equal(manifest.name, "canonspec-vscode");
 });
 
 test("an install after a link replaces the link", async () => {

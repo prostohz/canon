@@ -7,7 +7,7 @@ import { installHarnesses } from "./harness/index.js";
 // definition and the vocabulary written in it, released together under one
 // version. A project that speaks its own vocabulary names its own package
 // here instead — nothing about the tool prefers this one.
-export const SOURCE = "@canon/lang";
+export const SOURCE = "@canonspec/lang";
 
 export const MANIFEST = `# The set: what is checked as one delivery. A name written as a path is a
 # directory of this project; anything else is a package, resolved where

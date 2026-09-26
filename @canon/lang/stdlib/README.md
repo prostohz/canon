@@ -11,7 +11,7 @@ the repository of the language, in `@canon/lang/examples`.
 The directory holds no special position: the name `stdlib` is a convention,
 not a place the tool knows about. A module is named after its file and is
 connected by the word `uses`, not by a path, so a vocabulary may lie
-anywhere. It goes out inside `@canon/lang`, with the definition of the
+anywhere. It goes out inside `@canonspec/lang`, with the definition of the
 language it is written in and under the same version, and a project names
 it there — in the package npm installed for it — rather than copying it in;
 that changes nothing for the tool, which is still given a path.

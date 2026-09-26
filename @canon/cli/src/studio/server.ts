@@ -4,22 +4,18 @@ import { createServer } from "node:http";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { ManifestError, discover, load, resolve } from "@canon/lang";
+import { ManifestError, discover, load, resolve } from "@canonspec/lang";
 
 import { build } from "./model.js";
 import type { WorldView } from "./model.js";
 
-// The page is served as it lies, beside the compiled sources: dist/src is
-// two levels down from the root of the package.
 const HERE = dirname(fileURLToPath(import.meta.url));
-const INDEX = join(HERE, "..", "..", "public", "index.html");
+const INDEX = join(HERE, "..", "..", "..", "studio", "index.html");
 
-export const USAGE = `canon-studio — a canon set in a browser
+export const USAGE = `canon-cli studio — a canon set in a browser
 
 usage:
-  canon-studio [paths...] [--port <number>] [--no-browser]
-
-The same set is opened by canon-cli studio, which loads this package.
+  canon-cli studio [paths...] [--port <number>] [--no-browser]
 
 With no paths named, the set is taken from .canon/canon.toml — the same manifest
 canon check reads.
@@ -36,9 +32,7 @@ function open(address: string): void {
     : process.platform === "win32" ? "start" : "xdg-open";
   try {
     spawn(command, [address], { stdio: "ignore", detached: true }).unref();
-  } catch {
-    // Opening a browser is a courtesy: the address is printed anyway.
-  }
+  } catch {}
 }
 
 interface Arguments {

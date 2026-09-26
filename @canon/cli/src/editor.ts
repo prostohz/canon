@@ -1,26 +1,13 @@
-/** Laying the extension out where an editor of the VS Code family finds it. */
 import { access, cp, mkdir, readFile, readdir, rm, symlink } from "node:fs/promises";
-import { createRequire } from "node:module";
 import { homedir } from "node:os";
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const require = createRequire(import.meta.url);
+const EXTENSION = join(HERE, "..", "..", "extension");
 
-// The extension carries one manifest for npm and for the editor, and an
-// editor will not have a scoped name, so the package is the odd one out:
-// canon-vscode where the others are @canon/*. In a checkout it lies under
-// the directory name the rest go by.
-const PACKAGE = "canon-vscode";
-const IN_CHECKOUT = "vscode";
-
-// An editor scans this directory at start-up and takes every folder holding
-// a package.json for an extension; the marketplace is not involved.
 export const EXTENSIONS = join(homedir(), ".vscode", "extensions");
 
-// What the package carries for npm and not for the editor. package.json is
-// not among them: it is the manifest of the extension itself.
 const PACKAGING: ReadonlySet<string> = new Set([
   "package-lock.json", "node_modules", ".gitignore", ".vscodeignore",
 ]);
@@ -45,20 +32,9 @@ async function exists(path: string): Promise<boolean> {
   }
 }
 
-/** Where the extension is read from: the package, or a checkout. */
 export async function source(): Promise<string> {
-  const candidates: string[] = [];
-  try {
-    candidates.push(dirname(require.resolve(`${PACKAGE}/package.json`)));
-  } catch {
-    // Not installed: a checkout may still hold it beside canon-cli.
-  }
-  candidates.push(join(HERE, "..", "..", "..", IN_CHECKOUT));
-
-  for (const candidate of candidates) {
-    if (await exists(join(candidate, "package.json"))) return candidate;
-  }
-  throw new Error(`nothing to install from: is ${PACKAGE} installed?`);
+  if (await exists(join(EXTENSION, "package.json"))) return EXTENSION;
+  throw new Error("the bundled extension is missing");
 }
 
 async function manifest(from: string): Promise<Manifest> {
@@ -71,11 +47,10 @@ async function manifest(from: string): Promise<Manifest> {
   return read as Manifest;
 }
 
-/** Every folder an earlier install of the same extension may have left. */
 async function earlier(root: string, of: Manifest): Promise<string[]> {
-  const prefix = `${of.publisher}.${of.name}-`;
+  const prefixes = [`${of.publisher}.${of.name}-`, "canon.canon-vscode-"];
   try {
-    return (await readdir(root)).filter((name) => name.startsWith(prefix));
+    return (await readdir(root)).filter((name) => prefixes.some((prefix) => name.startsWith(prefix)));
   } catch {
     return [];
   }

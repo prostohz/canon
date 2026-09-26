@@ -1,4 +1,3 @@
-/** The set of specifications, shaped for display. */
 import {
   BUILTIN_ROOT,
   Diagnostic,
@@ -11,8 +10,8 @@ import {
   address,
   isStatement,
   replaced,
-} from "@canon/lang";
-import type { Declaration, Entity, Named } from "@canon/lang";
+} from "@canonspec/lang";
+import type { Declaration, Entity, Named } from "@canonspec/lang";
 
 const KINDS: Record<Declaration["kind"], string> = {
   entity: "entity",
@@ -31,7 +30,6 @@ export interface ProseView {
 export interface PartView {
   name: string;
   type: string;
-  /** The words written after the type: `many`, `optional`, or neither. */
   amount: string;
   inherited: string;
   line: number;
@@ -65,16 +63,10 @@ export interface DeclarationView {
   ancestors?: string[];
   values?: string[];
   mentions?: MentionView[];
-  /** The labels this statement replaces, and those it leans upon. */
   replaces?: string[];
   given?: string[];
-  /**
-   * The other end of each link, which the text of a file does not hold: what
-   * replaced this statement, and what leans upon it.
-   */
   replacedBy?: string[];
   underlies?: string[];
-  /** Whether the statement still stands: false once something replaces it. */
   inForce?: boolean;
 }
 
@@ -93,7 +85,6 @@ export interface Totals {
   named: number;
   requirements: number;
   exclusions: number;
-  /** Statements something replaces: counted among the set, out of force. */
   replaced: number;
   errors: number;
   warnings: number;
@@ -121,7 +112,6 @@ function find(world: World, ref: string, home: string): [Module, Named] | null {
   return null;
 }
 
-/** The chain of supertypes, nearest one first. */
 function chain(world: World, module: Module, entity: Entity): [Module, Named][] {
   const walked: [Module, Named][] = [];
   const seen = new Set<string>();
@@ -184,9 +174,6 @@ function under(index: Map<string, string[]>, key: string, value: string): void {
 export function build(world: World, diagnostics: Diagnostic[]): WorldView {
   const mentions = new Map<string, MentionView[]>();
 
-  // A link is written on the statement that came second and names the one
-  // that was already there, so the other end of it is nowhere in the text.
-  // Here is the one place both ends are visible.
   const retired = replaced(world);
   const replacedBy = new Map<string, string[]>();
   const underlies = new Map<string, string[]>();
@@ -199,8 +186,6 @@ export function build(world: World, diagnostics: Diagnostic[]): WorldView {
 
   for (const module of world.modules.values()) {
     for (const node of module.declarations) {
-      // A part and a value of an enum are shown under the declaration
-      // holding them, and a name mentioned twice mentions it once.
       const keys = new Set<string>();
       for (const target of referencesOf(node)) {
         if (LABEL_RE.test(target)) continue;

@@ -72,7 +72,6 @@
     border-radius: 7px; padding: .8rem 1rem; margin: 0 0 .8rem;
   }
   .card.excluded { opacity: .72; border-style: dashed; }
-  /* Out of force, and kept: the statement stands where it was written. */
   .card.retired { opacity: .55; }
   .card.retired h3 .mono:first-child { text-decoration: line-through; }
   .card h3 { margin: 0 0 .35rem; font-size: 1rem; display: flex;
@@ -190,8 +189,6 @@ function withLinks(block) {
 }
 
 function gotoLabel(label) {
-  // A label belongs to no module — it addresses a statement wherever it was
-  // written, so the module holding it is looked for rather than parsed out.
   const module = state.world.modules.find(m =>
     m.declarations.some(d => d.name === label && d.inForce !== undefined));
   if (!module) return;
@@ -208,8 +205,6 @@ function show(anchor) {
 }
 
 function goto(target) {
-  // A card stands for a declaration: a discriminator and a member of an
-  // address lead to the same card as the name they hang on.
   const name = target.replace(/[#.].*$/, '');
   const [head, tail] = name.includes(':') ? name.split(':') : [state.module, name];
   const module = state.world.modules.find(m => m.name === head);
@@ -260,8 +255,6 @@ function card(node) {
     ${node.obligation ? `<span class="tag">${escape(node.obligation)}</span>` : ''}
     ${retired ? '<span class="tag">out of force</span>' : ''}</h3>`);
 
-  // Both ends of every link. The two on the right are held by no file: a
-  // link is written on the statement that came second.
   const links = labels('replaces', node.replaces) + labels('given', node.given)
     + labels('replaced by', node.replacedBy) + labels('underlies', node.underlies);
   if (links) parts.push(`<div class="links">${links}</div>`);
